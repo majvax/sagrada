@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
+project(sagrada)
 
-# Set the project name
-project(GameProject)
+
+# Set the C standard
+set(CMAKE_C_STANDARD 99)
 
 # Add the executable
-add_executable(game
-    board.c
-    color.c
-    die.c
-    helper.c
-    main.c
-)
+file(GLOB SOURCES "src/*.c")
+add_executable(game ${SOURCES})
 
 # Include directories
-target_include_directories(game PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(game PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+
+# Add compiler flags
+target_compile_options(game PRIVATE -Werror -Wextra -g)
