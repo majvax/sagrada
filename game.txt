@@ -1,0 +1,44 @@
+Scénario 1:
+Sur 20 tour, chaque joueur reçoit un dé de couleur aléatoire, 
+le lance (pour obtenir une face aléatoire) et le place sur la grille
+
+
+
+Scénario 2:
+A chaque tour, 5 dé de couleurs aléatoires sont lancés (pour obtenir une face aléatoire)
+Joueur 1 choisit un dé, le place.
+Joueur 2 choisit 2 dés, les places.
+Joueur 1 choisit un dé, le place.
+
+A chaque tour, joueur 1 et joueur 2 sont inversé
+Une partie dure 10 tour.
+
+
+Scénario 3:
+Même chose que le scénario 2 mais les dés sont tirés d'un sac contenant 18 dés de chaque couleurs (90 au total)
+Chaque dés inutilisé n'est pas remit dans le sac 
+
+
+
+
+
+COMPTAGE DES POINTS:
+Une ligne ne contenant que des dés de valeurs différentes = 5pts
+Une colone ne contenant que des dés de différentes couleurs = 5pts
+Un set de 5 dés, chacun de couleur différentes = 4pts
+Chaque dés violet marque un nombre de points égal à sa valeurs
+
+
+
+STRATEGIE DU BOT:
+Simulation de Monte Carlo pour connaître les statistiques futures ?
+Evaluation euristique des mains (evaluation de chaque position une par une)
+Evaluation de blocage de points de l'adversaires
+
+si (potentiel_points > potentiel_blocage): joue les points
+si (potentiel_blocage > potentiel_points): joue le blocage tout en cherchant à maximiser les points
+
+si joue un blocage, il faut chercher une balance pour maximiser ses points
+(blocage impossible dans le scenario 1, le bot doit maximiser ses propres points)
+
+
