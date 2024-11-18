@@ -1,0 +1,39 @@
+Language: Cpp
+
+UseTab: Never
+IndentWidth: 4
+ColumnLimit: 80
+MaxEmptyLinesToKeep: 3
+FixNamespaceComments: false
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: false
+# AfterFunction: ?
+  AfterNamespace: false
+# AfterStruct: ?
+  AfterControlStatement: false
+  AfterEnum: false
+  BeforeElse: false
+
+SpacesInParens: Custom
+SpacesInParensOptions:
+# InConditionalStatements: ?
+  Other: false
+
+SpaceBeforeAssignmentOperators: true
+SpacesInSquareBrackets: false
+SpaceBeforeSquareBrackets: false
+# PointerAlignment: ?
+
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+  AfterFunctionDefinitionName: false
+  AfterIfMacro: false
+  AfterOverloadedOperator: true
+  AfterPlacementOperator: true
+  AfterRequiresInClause: true
+  AfterRequiresInExpression: false
+  BeforeNonEmptyParentheses: false
+

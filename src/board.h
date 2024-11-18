@@ -5,9 +5,9 @@
 #define COLUMN 5
 
 typedef struct {
-  die *grid[ROW][COLUMN];
-  int score;
-  int prediction;
+    die *grid[ROW][COLUMN];
+    int score;
+    int prediction;
 } board;
 
 extern board *create_board();

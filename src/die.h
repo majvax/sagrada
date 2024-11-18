@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 typedef struct {
-  int value;
-  int color;
-  int is_used;
+    int value;
+    int color;
+    int is_used;
 } die;
 
 extern die *create_die(int color, int value);

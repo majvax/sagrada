@@ -14,4 +14,4 @@ target_include_directories(game PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 
 # Add compiler flags
-target_compile_options(game PRIVATE -Werror -Wextra -g)
+target_compile_options(game PRIVATE -Werror -Wextra -g -fanalyzer)
