@@ -1,55 +1,53 @@
+#include "board.h"
+#include "terminal.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "board.h"
-
-const char *colors[5] = {"blue", "yellow", "red", "green", "purple"};
-
 
 int main(void) {
     srand(time(NULL));
-    die **dice_set = get_dice_set();
-    board *b = create_board();
+    die** dice_set = get_dice_set();
+    // TODO: create meaningful names for the boards -_-
+    board* b = create_board(); // player's board
+    // board* b2 = create_board(); // board of the opponent
 
     for (int rounds = 1; rounds < 11; rounds++) {
-        printf("---------TOUR %d---------\n", rounds);
+        clear();
+        printf("-> TOUR %d\n\n\n", rounds);
         print_board(b);
+        printf("\n\n");
+        printf("-> Score: %d\n", calculate_points(b));
+        printf("-> Voici les des de ce tour\n");
 
-        die **dice = get_dice(dice_set, 5);
+        die** dice = get_dice(dice_set, 5);
 
         for (int i = 0; i < 5; i++) {
-            printf("Vous avez tire un de: %s%d %s\n\e[0;37m",
-                   get_ascii_code(dice[i]->color), dice[i]->value,
-                   colors[dice[i]->color]);
+            print_die(dice[i]);
+            printf(" ");
+            move_up(DIE_ART_LENGTH);
+            move_right(DIE_ART_WIDTH + 1);
         }
+        move_down(DIE_ART_LENGTH);
         printf("\n");
 
-        int row=-1, column=-1;
-        int c=0, v=0;
-        char c_;
-        printf("Choisissez votre de (c, v): ");
-        scanf(" %c, %d", &c_, &v);
-        c = get_color_code(c_);
 
-        for (int i = 0; i < 5; i++) {
-            if (c == dice[i]->color && v == dice[i]->value) {
-                printf("Ou le placer (x, y): ");
-                scanf("%d, %d", &row, &column);
 
-                if (!place_die(b, dice[i], row, column)) {
-                    printf("Un de est deja a cet emplacement !, %d, %s\n",
-                           b->grid[row][column]->value,
-                           colors[b->grid[row][column]->color]);
-                    return 0;
-                }
-            }
+        int choice = get_int_range("-> Choisissez un de (1-5): ", 1, 5);
+
+
+        int x = get_int_range("-> Choisissez ou le placer (x): ", 1, COLUMN + 1);
+        int y = get_int_range("-> Choisissez ou le placer (y): ", 1, ROW + 1);
+
+        while (place_die(b, dice[choice - 1], y - 1, x - 1) == 0) {
+            printf("-> Impossible de placer le de a cet endroit\n");
+            x = get_int_range("-> Choisissez ou le placer (x): ", 1, COLUMN + 1);
+            y = get_int_range("-> Choisissez ou le placer (y): ", 1, ROW + 1);
         }
 
-        printf("Score: %d\n", calculate_points(b));
+        dice[choice - 1] = NULL;
 
         free_dice(dice, 5);
-        printf("\n\n");
     }
 
     free_dice_set(dice_set);

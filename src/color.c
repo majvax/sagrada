@@ -1,17 +1,17 @@
 #include "color.h"
 
-char *get_ascii_code(int color) {
+char* get_ansi_code(int color) {
     switch (color) {
     case BLUE:
-        return ASCII_BLUE;
+        return ANSI_BLUE;
     case YELLOW:
-        return ASCII_YELLOW;
+        return ANSI_YELLOW;
     case RED:
-        return ASCII_RED;
+        return ANSI_RED;
     case GREEN:
-        return ASCII_GREEN;
+        return ANSI_GREEN;
     case PURPLE:
-        return ASCII_PURPLE;
+        return ANSI_PURPLE;
     default:
         return "";
     }
@@ -34,7 +34,7 @@ int get_color_code(char c) {
     }
 }
 
-char *get_background_color_code(int color) {
+char* get_background_color_code(int color) {
     switch (color) {
     case 'b':
         return BACKGROUND_BLUE;

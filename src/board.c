@@ -1,8 +1,12 @@
 #include "board.h"
+#include "terminal.h"
 #include <stdio.h>
+#include <windows.h>
 
-board *create_board() {
-    board *b = malloc(sizeof(board));
+
+board* create_board() {
+    // allocate 168 bytes for the board
+    board* b = malloc(sizeof(board));
     assert(b != NULL && "create_board: Memory allocation failed");
 
     // initiate every dice to NULL
@@ -16,28 +20,24 @@ board *create_board() {
     return b;
 }
 
-void free_board(board *b) {
-    for (int i = 0; i < ROW; i++)
-        for (int j = 0; j < COLUMN; j++)
+void free_board(board* b) {
+    for (int i = 0; i < ROW; i++) {
+        for (int j = 0; j < COLUMN; j++) {
             if (b->grid[i][j] != NULL)
                 free(b->grid[i][j]);
-
+        }
+    }
     free(b);
 }
 
-int place_die(board *b, die *d, int posx, int posy) {
+int place_die(board* b, die* d, int posx, int posy) {
     if (b->grid[posx][posy] != NULL)
         return 0;
-    die *nd = malloc(sizeof(die));
-    assert(nd != NULL && "place_die: Memory allocation failed.");
-    nd->color = d->color;
-    nd->value = d->value;
-    b->grid[posx][posy] = nd;
-
+    b->grid[posx][posy] = d;
     return 1;
 }
 
-int calculate_row(board *b, int row) {
+int calculate_row(board* b, int row) {
     for (int i = 0; i < COLUMN; i++) {
         if (b->grid[row][i] == NULL)
             return 0;
@@ -52,7 +52,7 @@ int calculate_row(board *b, int row) {
     return 5;
 }
 
-int calculate_column(board *b, int column) {
+int calculate_column(board* b, int column) {
     for (int i = 0; i < ROW; i++) {
         if (b->grid[i][column] == NULL)
             return 0;
@@ -67,7 +67,7 @@ int calculate_column(board *b, int column) {
     return 5;
 }
 
-int calculate_points(board *b) {
+int calculate_points(board* b) {
     int score = 0;
     for (int i = 0; i < ROW; i++)
         score += calculate_row(b, i);
@@ -86,18 +86,17 @@ int calculate_points(board *b) {
     return score;
 }
 
-void print_board(board *b) {
+void print_board(board* b) {
     for (int i = 0; i < ROW; i++) {
         for (int j = 0; j < COLUMN; j++) {
-            die *d = b->grid[i][j];
-            if (d == NULL) {
-                printf(" ");
-                continue;
-            }
+            die* d = b->grid[i][j];
 
-            printf("%s%d", get_ascii_code(d->color), d->value);
-            printf("\e[0m ");
+            print_die(d);
+
+            move_up(DIE_ART_LENGTH);
+            move_right(DIE_ART_WIDTH + 1);
         }
+        move_down(DIE_ART_LENGTH - 1);
         printf("\n");
     }
 }

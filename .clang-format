@@ -2,7 +2,7 @@ Language: Cpp
 
 UseTab: Never
 IndentWidth: 4
-ColumnLimit: 80
+ColumnLimit: 100
 MaxEmptyLinesToKeep: 3
 FixNamespaceComments: false
 
@@ -24,7 +24,7 @@ SpacesInParensOptions:
 SpaceBeforeAssignmentOperators: true
 SpacesInSquareBrackets: false
 SpaceBeforeSquareBrackets: false
-# PointerAlignment: ?
+PointerAlignment: Left
 
 SpaceBeforeParens: Custom
 SpaceBeforeParensOptions:
