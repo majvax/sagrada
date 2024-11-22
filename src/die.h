@@ -29,6 +29,6 @@ extern void free_dice(die** dice_set, int size);
 
 char** get_ascii_die(die* d);
 void print_die(die* d);
-
+void print_dice(die** dice, int size);
 
 #endif // DIE_H

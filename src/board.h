@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include "color.h"
 #include "die.h"
 
@@ -11,14 +14,16 @@
 
 typedef struct {
     die* grid[ROW][COLUMN];
-    int score;
-    int prediction;
-} board; // 4*5*sizeof(die) + 2*sizeof(int) = 168 bytes
+} board; // 4*5*sizeof(die) + sizeof(int) = 160 bytes
 
 extern board* create_board();
+extern board* copy_board(board* b);
 extern void free_board(board* b);
 extern int place_die(board* b, die* d, int posx, int posy);
 
 extern int calculate_points(board* b);
 
-extern void print_board(board* b);
+extern void print_boards(board* b, board* b2);
+
+
+#endif // BOARD_H

@@ -137,7 +137,6 @@ char** get_ascii_die(die* d) {
     }
 }
 
-
 void print_die(die* d) {
     char* color = (d != NULL) ? get_ansi_code(d->color) : ANSI_RESET;
     char** art = get_ascii_die(d);
@@ -147,4 +146,16 @@ void print_die(die* d) {
         move_left(DIE_ART_WIDTH + 1);
         move_down(1);
     }
+}
+
+void print_dice(die** dice, int size) {
+    for (int i = 0; i < 5; i++) {
+        if (dice[i] == NULL)
+            continue;
+        print_die(dice[i]);
+        printf(" ");
+        move_up(DIE_ART_LENGTH);
+        move_right(DIE_ART_WIDTH + 1);
+    }
+    move_down(DIE_ART_LENGTH);
 }

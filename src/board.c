@@ -1,11 +1,10 @@
 #include "board.h"
 #include "terminal.h"
 #include <stdio.h>
-#include <windows.h>
 
 
 board* create_board() {
-    // allocate 168 bytes for the board
+    // allocate 160 bytes for the board
     board* b = malloc(sizeof(board));
     assert(b != NULL && "create_board: Memory allocation failed");
 
@@ -14,10 +13,16 @@ board* create_board() {
         for (int j = 0; j < COLUMN; j++)
             b->grid[i][j] = NULL;
 
-    b->score = 0;
-    b->prediction = 0;
-
     return b;
+}
+
+board* copy_board(board* b) {
+    board* copy = create_board();
+    for (int i = 0; i < ROW; i++)
+        for (int j = 0; j < COLUMN; j++)
+            if (b->grid[i][j] != NULL)
+                copy->grid[i][j] = create_die(b->grid[i][j]->color, b->grid[i][j]->value);
+    return copy;
 }
 
 void free_board(board* b) {
@@ -86,8 +91,9 @@ int calculate_points(board* b) {
     return score;
 }
 
-void print_board(board* b) {
+void print_boards(board* b, board* b2) {
     for (int i = 0; i < ROW; i++) {
+        printf("\t");
         for (int j = 0; j < COLUMN; j++) {
             die* d = b->grid[i][j];
 
@@ -96,6 +102,20 @@ void print_board(board* b) {
             move_up(DIE_ART_LENGTH);
             move_right(DIE_ART_WIDTH + 1);
         }
+
+        printf("\t");
+
+        for (int j = 0; j < COLUMN; j++) {
+            die* d = b2->grid[i][j];
+
+            print_die(d);
+
+            move_up(DIE_ART_LENGTH);
+            move_right(DIE_ART_WIDTH + 1);
+        }
+
+
+
         move_down(DIE_ART_LENGTH - 1);
         printf("\n");
     }
