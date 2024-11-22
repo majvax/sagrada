@@ -36,13 +36,23 @@ die* create_die(int color, int value) {
     return d;
 }
 
-void free_die(die* d) { free(d); }
+die* copy_die(die* d) {
+    if (d == NULL)
+        return NULL;
+    return create_die(d->color, d->value);
+}
 
-die** get_dice_set() {
+void free_die(die* d) {
+    if (d != NULL)
+        free(d);
+}
+
+
+die** create_dice_set() {
     // Allocate memory for an array of 90 die pointers
     // 90 * sizeof(die*) = 90 * 8 = 720 bytes allocated
     die** dice_set = malloc(sizeof(die*) * DICE_SET_SIZE);
-    assert(dice_set != NULL && "get_dice_set: Memory allocation failed");
+    assert(dice_set != NULL && "create_dice_set: Memory allocation failed");
 
     int index = 0;
     // create 3 dice for each value of each color
@@ -67,20 +77,48 @@ die** get_dice_set() {
     return dice_set;
 }
 
-void free_dice_set(die** dice_set) {
-    for (int i = 0; i < DICE_SET_SIZE; i++) {
-        if (dice_set[i] != NULL)
-            free_die(dice_set[i]);
-    }
-    free(dice_set);
-}
-
 die** copy_dice_set(die** dice_set) {
     die** copy = malloc(sizeof(die*) * DICE_SET_SIZE);
     assert(copy != NULL && "copy_dice_set: Memory allocation failed");
     for (int i = 0; i < DICE_SET_SIZE; i++) {
         die* d = dice_set[i];
-        copy[i] = create_die(d->color, d->value);
+        if (d != NULL)
+            copy[i] = create_die(d->color, d->value);
+        else
+            copy[i] = NULL;
+    }
+    return copy;
+}
+
+
+die** copy_dice(die** dice, int size) {
+    die** dice_copy = (die**)malloc(sizeof(die*) * size);
+    assert(dice_copy != NULL && "copy_dice: Memory allocation failed");
+    for (int i = 0; i < size; i++) {
+        dice_copy[i] = copy_die(dice[i]);
+    }
+    return dice_copy;
+}
+
+void free_dice_copy(die** dice_copy, int size) {
+    for (int i = 0; i < size; i++) {
+        if (dice_copy[i] != NULL) {
+            free_die(dice_copy[i]);
+            dice_copy[i] = NULL;
+        }
+    }
+    free(dice_copy);
+}
+
+die** copy_dice_array(die** dice_set, int size) {
+    die** copy = malloc(sizeof(die*) * size);
+    assert(copy != NULL && "copy_dice_set: Memory allocation failed");
+    for (int i = 0; i < size; i++) {
+        die* d = dice_set[i];
+        if (d != NULL)
+            copy[i] = create_die(d->color, d->value);
+        else
+            copy[i] = NULL;
     }
     return copy;
 }
@@ -111,9 +149,14 @@ die** get_dice(die** dice_set, int number) {
 }
 
 void free_dice(die** dice_set, int size) {
+    if (dice_set == NULL)
+        return;
     for (int i = 0; i < size; i++) {
-        free_die(dice_set[i]);
-    }
+        if (dice_set[i] != NULL) {
+            free_die(dice_set[i]);
+            dice_set[i] = NULL;
+        }
+    }   
     free(dice_set);
 }
 
@@ -149,7 +192,7 @@ void print_die(die* d) {
 }
 
 void print_dice(die** dice, int size) {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < size; i++) {
         if (dice[i] == NULL)
             continue;
         print_die(dice[i]);

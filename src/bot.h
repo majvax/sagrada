@@ -1,7 +1,9 @@
-#include <stdio.h>
 #include "board.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIMULATIONS 100000
+#define SIMULATION_DEPTH 20
 
 
-extern int calculate_die_pos_points_potential(board* b, die* d, int x, int y);
-extern int make_move(board* b, die** dice);
-
+extern int make_move(board* b, die** dice, board* opponent_board);

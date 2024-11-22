@@ -19,3 +19,8 @@ cmake ..
 ```bash
 cmake --build .
 ```
+
+5. **Ensure there is no memory leak**: I personnaly use drmemory
+```bash
+drmemory -quiet .\game.exe
+```

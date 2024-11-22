@@ -25,11 +25,14 @@ void player_turn(board* player_board, die** dice, int dice_left) {
         y = get_int_range("-> Choisissez ou le placer (position y de %d a %d): ", 1, ROW);
     }
 
+    free_die(dice[choice - 1]);
     dice[choice - 1] = NULL;
 }
 
-void bot_turn(board* bot_board, die** dice, int dice_left) {
-    dice[make_move(bot_board, dice)] = NULL;
+void bot_turn(board* bot_board, board* player_board, die** dice) {
+    int dice_index = make_move(bot_board, dice, player_board);
+    free_die(dice[dice_index]);
+    dice[dice_index] = NULL;
 }
 
 void round_menu(int rounds, board* player_board, board* bot_board, die** dice) {
@@ -51,26 +54,47 @@ void play_round(int rounds, die** dice_set, board* player_board, board* bot_boar
     round_menu(rounds, player_board, bot_board, dice);
 
 
+    // bot against bot for testing purposes
+    // if (priority) {
+    //     bot_turn(player_board, bot_board, dice);
+    //     bot_turn(bot_board, player_board, dice);
+    //     bot_turn(bot_board, player_board, dice);
+    //     bot_turn(player_board, bot_board, dice);
+    // } else {
+    //     bot_turn(bot_board, player_board, dice);
+    //     bot_turn(player_board, bot_board, dice);
+    //     bot_turn(player_board, bot_board, dice);
+    //     bot_turn(bot_board, player_board, dice);
+    // }
+
+    // free_dice(dice, 5);
+    // return;
+
+
     if (priority) {
         player_turn(player_board, dice, dice_left--);
         round_menu(rounds, player_board, bot_board, dice);
-        sleep(1000);
-        bot_turn(bot_board, dice, --dice_left);
+        // sleep(1000);
+        bot_turn(bot_board, player_board, dice);
+        dice_left--;
         round_menu(rounds, player_board, bot_board, dice);
-        sleep(1000);
-        bot_turn(bot_board, dice, --dice_left);
+        // sleep(1000);
+        bot_turn(bot_board, player_board, dice);
+        dice_left--;
         round_menu(rounds, player_board, bot_board, dice);
         player_turn(player_board, dice, dice_left--);
     } else {
-        sleep(1000);
-        bot_turn(bot_board, dice, --dice_left);
+        // sleep(1000);
+        bot_turn(bot_board, player_board, dice);
+        dice_left--;
         round_menu(rounds, player_board, bot_board, dice);
         player_turn(player_board, dice, dice_left--);
         round_menu(rounds, player_board, bot_board, dice);
         player_turn(player_board, dice, dice_left--);
         round_menu(rounds, player_board, bot_board, dice);
-        sleep(1000);
-        bot_turn(bot_board, dice, --dice_left);
+        // sleep(1000);
+        bot_turn(bot_board, player_board, dice);
+        dice_left--;
     }
 
     free_dice(dice, 5);
@@ -78,7 +102,7 @@ void play_round(int rounds, die** dice_set, board* player_board, board* bot_boar
 
 int main(void) {
     srand((unsigned)time(NULL));
-    die** dice_set = get_dice_set();
+    die** dice_set = create_dice_set();
     board* player_board = create_board(); // player's board
     board* bot_board = create_board();    // board of the bot
     int priority = rand() % 2;            // 0 or 1
@@ -102,6 +126,8 @@ int main(void) {
         printf("-> Egalite!\n");
     }
 
-    free_dice_set(dice_set);
+    free_board(player_board);
+    free_board(bot_board);
+    free_dice(dice_set, DICE_SET_SIZE);
     return 0;
 }

@@ -22,23 +22,31 @@ board* copy_board(board* b) {
         for (int j = 0; j < COLUMN; j++)
             if (b->grid[i][j] != NULL)
                 copy->grid[i][j] = create_die(b->grid[i][j]->color, b->grid[i][j]->value);
+            else
+                copy->grid[i][j] = NULL; // should be NULL anyway
     return copy;
 }
 
 void free_board(board* b) {
+    if (b == NULL)
+        return;
     for (int i = 0; i < ROW; i++) {
         for (int j = 0; j < COLUMN; j++) {
-            if (b->grid[i][j] != NULL)
-                free(b->grid[i][j]);
+            if (b->grid[i][j] != NULL) {
+                free_die(b->grid[i][j]);
+                b->grid[i][j] = NULL;
+            }
         }
     }
     free(b);
 }
 
 int place_die(board* b, die* d, int posx, int posy) {
+    if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
+        return 0;
     if (b->grid[posx][posy] != NULL)
         return 0;
-    b->grid[posx][posy] = d;
+    b->grid[posx][posy] = create_die(d->color, d->value);
     return 1;
 }
 
