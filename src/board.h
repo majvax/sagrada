@@ -9,7 +9,7 @@
 
 #define BOARD_ART_LENGTH DIE_ART_LENGTH* ROW
 #define BOARD_ART_WIDTH DIE_ART_WIDTH* COLUMN
-
+#define EXTRA_RULES 1 // 1 if extra rule is enabled, 0 otherwise
 
 
 typedef struct {

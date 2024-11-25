@@ -14,7 +14,8 @@ void clear(void) { printf("\033[H\033[J"); }
 
 void sleep(int ms) {
     clock_t start = clock();
-    while (clock() < start + ms );
+    while (clock() < start + ms)
+        ;
 }
 
 int get_int_range(char* prompt, int from, int to) {

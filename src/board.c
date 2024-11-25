@@ -62,6 +62,14 @@ int calculate_row(board* b, int row) {
                 return 0;
         }
     }
+
+    // extra rule (if 5 dice in a row are different value -> 5pts, and if they are same color -> 10pts)
+    if (EXTRA_RULES &&
+        b->grid[row][0]->color == b->grid[row][1]->color &&
+        b->grid[row][1]->color == b->grid[row][2]->color &&
+        b->grid[row][2]->color == b->grid[row][3]->color &&
+        b->grid[row][3]->color == b->grid[row][4]->color)
+        return 10;
     return 5;
 }
 
@@ -77,6 +85,14 @@ int calculate_column(board* b, int column) {
                 return 0;
         }
     }
+
+    // extra rule (if 4 dice in a column are different colors -> 5pts, and if they are same value -> 10pts)
+    if (EXTRA_RULES &&
+        b->grid[0][column]->value == b->grid[1][column]->value &&
+        b->grid[1][column]->value == b->grid[2][column]->value &&
+        b->grid[2][column]->value == b->grid[3][column]->value)
+        return 10;
+
     return 5;
 }
 

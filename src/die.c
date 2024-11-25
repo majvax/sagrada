@@ -156,7 +156,7 @@ void free_dice(die** dice_set, int size) {
             free_die(dice_set[i]);
             dice_set[i] = NULL;
         }
-    }   
+    }
     free(dice_set);
 }
 
