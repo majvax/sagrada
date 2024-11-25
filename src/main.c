@@ -29,10 +29,10 @@ void player_turn(board* player_board, die** dice, int dice_left) {
     dice[choice - 1] = NULL;
 }
 
-void bot_turn(board* bot_board, board* player_board, die** dice) {
-    int dice_index = make_move(bot_board, dice, player_board);
-    free_die(dice[dice_index]);
-    dice[dice_index] = NULL;
+void bot_turn(board* bot_board, board* player_board, die** dice, die** dice_set_copy, int rounds_remaining, int priority) {
+  int dice_index = make_move(bot_board, dice, player_board, dice_set_copy, rounds_remaining, priority);
+  free_die(dice[dice_index]);
+  dice[dice_index] = NULL;
 }
 
 void round_menu(int rounds, board* player_board, board* bot_board, die** dice) {
@@ -50,50 +50,60 @@ void round_menu(int rounds, board* player_board, board* bot_board, die** dice) {
 void play_round(int rounds, die** dice_set, board* player_board, board* bot_board, int priority) {
     die** dice = get_dice(dice_set, 5);
     int dice_left = 5;
+    int rounds_remaining = 11 - rounds;
 
     round_menu(rounds, player_board, bot_board, dice);
 
 
-    // bot against bot for testing purposes
-    // if (priority) {
-    //     bot_turn(player_board, bot_board, dice);
-    //     bot_turn(bot_board, player_board, dice);
-    //     bot_turn(bot_board, player_board, dice);
-    //     bot_turn(player_board, bot_board, dice);
-    // } else {
-    //     bot_turn(bot_board, player_board, dice);
-    //     bot_turn(player_board, bot_board, dice);
-    //     bot_turn(player_board, bot_board, dice);
-    //     bot_turn(bot_board, player_board, dice);
-    // }
 
-    // free_dice(dice, 5);
-    // return;
+
+
+
+    // bot against bot for testing purposes
+    if (priority) {
+        bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
+        round_menu(rounds, player_board, bot_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
+        round_menu(rounds, player_board, bot_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
+        round_menu(rounds, player_board, bot_board, dice);
+        bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
+    } else {
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
+        round_menu(rounds, player_board, bot_board, dice);
+        bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
+        round_menu(rounds, player_board, bot_board, dice);
+        bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
+        round_menu(rounds, player_board, bot_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
+    }
+
+    free_dice(dice, 5);
+    return;
+
+
+
 
 
     if (priority) {
         player_turn(player_board, dice, dice_left--);
         round_menu(rounds, player_board, bot_board, dice);
-        // sleep(1000);
-        bot_turn(bot_board, player_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
         dice_left--;
         round_menu(rounds, player_board, bot_board, dice);
-        // sleep(1000);
-        bot_turn(bot_board, player_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
         dice_left--;
         round_menu(rounds, player_board, bot_board, dice);
         player_turn(player_board, dice, dice_left--);
     } else {
-        // sleep(1000);
-        bot_turn(bot_board, player_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
         dice_left--;
         round_menu(rounds, player_board, bot_board, dice);
         player_turn(player_board, dice, dice_left--);
         round_menu(rounds, player_board, bot_board, dice);
         player_turn(player_board, dice, dice_left--);
         round_menu(rounds, player_board, bot_board, dice);
-        // sleep(1000);
-        bot_turn(bot_board, player_board, dice);
+        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
         dice_left--;
     }
 

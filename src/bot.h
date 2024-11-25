@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SIMULATIONS 100000
-#define SIMULATION_DEPTH 20
+#define SIMULATIONS 1000
 
-
-extern int make_move(board* b, die** dice, board* opponent_board);
+extern int make_move(board* b, die** dice, board* opponent_board, die** dice_set, int rounds_remaining, int priority);
