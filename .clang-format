@@ -9,16 +9,16 @@ FixNamespaceComments: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterClass: false
-# AfterFunction: ?
+  # AfterFunction: ?
   AfterNamespace: false
-# AfterStruct: ?
+  # AfterStruct: ?
   AfterControlStatement: false
   AfterEnum: false
   BeforeElse: false
 
 SpacesInParens: Custom
 SpacesInParensOptions:
-# InConditionalStatements: ?
+  # InConditionalStatements: ?
   Other: false
 
 SpaceBeforeAssignmentOperators: true
@@ -36,4 +36,3 @@ SpaceBeforeParensOptions:
   AfterRequiresInClause: true
   AfterRequiresInExpression: false
   BeforeNonEmptyParentheses: false
-

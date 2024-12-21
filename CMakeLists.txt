@@ -6,12 +6,20 @@ project(sagrada)
 set(CMAKE_C_STANDARD 99)
 
 # Add the executable
-file(GLOB SOURCES "src/*.c")
-add_executable(game ${SOURCES})
+file(GLOB_RECURSE SOURCES "src/**/*.c" "src/*.c")
+add_executable(sagrada ${SOURCES})
 
-# Include directories
-target_include_directories(game PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+set(INCLUDE_DIRS "")
+foreach(FILE ${SOURCES})
+    get_filename_component(DIR ${FILE} DIRECTORY)
+    list(APPEND INCLUDE_DIRS ${DIR})
+endforeach()
+list(REMOVE_DUPLICATES INCLUDE_DIRS)
+
+# Add include directories
+target_include_directories(sagrada PRIVATE ${INCLUDE_DIRS})
 
 
 # Add compiler flags
-target_compile_options(game PRIVATE -Werror -Wextra -g -fanalyzer)
+target_compile_options(sagrada PRIVATE -Werror -Wextra -g -fanalyzer)

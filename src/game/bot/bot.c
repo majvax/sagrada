@@ -102,7 +102,7 @@ int make_move(board* b, die** dice, board* opponent_board, die** dice_set, int r
 
                 double total_score = 0.0;
 
-                for (int sim = 0; sim < SIMULATIONS; sim++) {
+                for (int sim = 0; sim < get_config()->simulations; sim++) {
                     // Copy boards and dice set for simulation
                     board* b_copy = copy_board(b);
                     board* opp_copy = copy_board(opponent_board);
@@ -132,7 +132,7 @@ int make_move(board* b, die** dice, board* opponent_board, die** dice_set, int r
                     free_dice(dice_set_copy, DICE_SET_SIZE);
                 }
 
-                double avg_score = total_score / SIMULATIONS;
+                double avg_score = total_score / get_config()->simulations;
 
                 if (avg_score > best_score) {
                     best_score = avg_score;

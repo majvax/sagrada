@@ -1,8 +1,6 @@
 #ifndef DIE_H
 #define DIE_H
 
-#include "color.h"
-#include "terminal.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,8 +30,6 @@ extern die* get_random_die(die** dice_set);
 extern die** get_dice(die** dice_set, int number);
 extern void free_dice(die** dice_set, int size);
 
-char** get_ascii_die(die* d);
-void print_die(die* d);
-void print_dice(die** dice, int size);
+
 
 #endif // DIE_H

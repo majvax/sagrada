@@ -1,31 +1,6 @@
 #include "die.h"
 
 
-char* die_1[5] = {
-    "+-------+", "|       |", "|   O   |", "|       |", "+-------+",
-};
-
-char* die_2[5] = {
-    "+-------+", "| O     |", "|       |", "|     O |", "+-------+",
-};
-
-char* die_3[5] = {
-    "+-------+", "| O     |", "|   O   |", "|     O |", "+-------+",
-};
-
-char* die_4[5] = {
-    "+-------+", "| O   O |", "|       |", "| O   O |", "+-------+",
-};
-
-char* die_5[5] = {
-    "+-------+", "| O   O |", "|   O   |", "| O   O |", "+-------+",
-};
-
-char* die_6[5] = {
-    "+-------+", "| O   O |", "| O   O |", "| O   O |", "+-------+",
-};
-
-char* die_empty[5] = {"+-------+", "|       |", "|       |", "|       |", "+-------+"};
 
 die* create_die(int color, int value) {
     // allocating 8 bytes
@@ -46,7 +21,6 @@ void free_die(die* d) {
     if (d != NULL)
         free(d);
 }
-
 
 die** create_dice_set() {
     // Allocate memory for an array of 90 die pointers
@@ -89,7 +63,6 @@ die** copy_dice_set(die** dice_set) {
     }
     return copy;
 }
-
 
 die** copy_dice(die** dice, int size) {
     die** dice_copy = (die**)malloc(sizeof(die*) * size);
@@ -158,47 +131,4 @@ void free_dice(die** dice_set, int size) {
         }
     }
     free(dice_set);
-}
-
-char** get_ascii_die(die* d) {
-    if (d == NULL) {
-        return die_empty;
-    }
-    switch (d->value) {
-    case 1:
-        return die_1;
-    case 2:
-        return die_2;
-    case 3:
-        return die_3;
-    case 4:
-        return die_4;
-    case 5:
-        return die_5;
-    default:
-        return die_6;
-    }
-}
-
-void print_die(die* d) {
-    char* color = (d != NULL) ? get_ansi_code(d->color) : ANSI_RESET;
-    char** art = get_ascii_die(d);
-
-    for (int k = 0; k < DIE_ART_LENGTH; k++) {
-        printf("%s%s%s ", color, art[k], ANSI_RESET);
-        move_left(DIE_ART_WIDTH + 1);
-        move_down(1);
-    }
-}
-
-void print_dice(die** dice, int size) {
-    for (int i = 0; i < size; i++) {
-        if (dice[i] == NULL)
-            continue;
-        print_die(dice[i]);
-        printf(" ");
-        move_up(DIE_ART_LENGTH);
-        move_right(DIE_ART_WIDTH + 1);
-    }
-    move_down(DIE_ART_LENGTH);
 }

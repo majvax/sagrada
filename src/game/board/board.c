@@ -1,6 +1,4 @@
 #include "board.h"
-#include "terminal.h"
-#include <stdio.h>
 
 
 board* create_board() {
@@ -41,13 +39,13 @@ void free_board(board* b) {
     free(b);
 }
 
-int place_die(board* b, die* d, int posx, int posy) {
+bool place_die(board* b, die* d, int posx, int posy) {
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
-        return 0;
+        return false;
     if (b->grid[posx][posy] != NULL)
-        return 0;
+        return false;
     b->grid[posx][posy] = create_die(d->color, d->value);
-    return 1;
+    return true;
 }
 
 int calculate_row(board* b, int row) {
@@ -115,32 +113,3 @@ int calculate_points(board* b) {
     return score;
 }
 
-void print_boards(board* b, board* b2) {
-    for (int i = 0; i < ROW; i++) {
-        printf("\t");
-        for (int j = 0; j < COLUMN; j++) {
-            die* d = b->grid[i][j];
-
-            print_die(d);
-
-            move_up(DIE_ART_LENGTH);
-            move_right(DIE_ART_WIDTH + 1);
-        }
-
-        printf("\t");
-
-        for (int j = 0; j < COLUMN; j++) {
-            die* d = b2->grid[i][j];
-
-            print_die(d);
-
-            move_up(DIE_ART_LENGTH);
-            move_right(DIE_ART_WIDTH + 1);
-        }
-
-
-
-        move_down(DIE_ART_LENGTH - 1);
-        printf("\n");
-    }
-}
