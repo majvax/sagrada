@@ -10,3 +10,4 @@ extern void clear();
 extern void sleep(int ms);
 
 extern int get_int_range(char* prompt, int from, int to);
+extern void wait_for_enter();

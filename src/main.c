@@ -18,9 +18,12 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    game_menu();
+
+
     die** dice_set = create_dice_set();
-    board* player_board = create_board(); // player's board
-    board* bot_board = create_board();    // board of the bot
+    board* player_board = create_board();
+    board* bot_board = create_board();
 
 
     play_game(player_board, bot_board, dice_set);

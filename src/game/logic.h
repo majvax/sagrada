@@ -7,3 +7,5 @@ extern void bot_turn(board* b, board* player_board, die** dice, die** dice_set, 
 extern void round_menu(int rounds, board* player_board, board* bot_board, die** dice);
 extern void play_round(int rounds, die** dice_set, board* player_board, board* bot_board, int priority);
 extern void play_game(board* player_board, board* bot_board, die** dice_set);
+extern void game_menu();
+extern void print_rules();

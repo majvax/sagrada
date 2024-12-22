@@ -27,3 +27,9 @@ int get_int_range(char* prompt, int from, int to) {
     } while (choice < from || choice > to);
     return choice;
 }
+
+
+void wait_for_enter() {
+    while (getchar() != '\n');
+    getchar();
+}

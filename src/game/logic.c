@@ -123,3 +123,43 @@ void play_game(board* player_board, board* bot_board, die** dice_set) {
     } else {
         printf("-> Egalite!\n");
     }}
+
+void game_menu() {
+    for (;;) {
+        clear();
+        printf("-> BIENVENUE DANS LE JEU DE SAGRADA\n\n");
+        printf("  -> 1. Jouer\n");
+        printf("  -> 2. Regles\n");
+        printf("  -> 3. Configurations\n");
+        printf("  -> 4. Quitter\n\n");
+
+        int choice = get_int_range("-> Choisissez une option (%d-%d): ", 1, 4);
+
+        switch (choice) {
+            case 1: return;
+            case 2: clear(); print_rules(); wait_for_enter(); break;
+            case 3: clear(); print_config(); wait_for_enter(); break;
+            case 4: exit(0);
+        }
+    }
+}
+
+void print_rules() {
+    printf("-> REGLES\n\n");
+    printf("  -> Le jeu se joue en 10 tours\n");
+    printf("  -> A chaque tour, 5 des sont tires aleatoirement d'un sac de 90 des\n");
+    printf("  -> Un des 2 joueurs est choisis aleatoirement pour etre le premier joueur, a chaque tour les roles sont inverse\n");
+    printf("  -> Le premier joueur choisit un de et le place sur son plateau\n");
+    printf("  -> Le deuxieme joueur choisit deux des et les place sur son plateau\n");
+    printf("  -> Le premier joueur choisit un dernier de et les place sur son plateau\n");
+    printf("  -> Finalement, le dernier de est defausse\n\n");
+
+    printf("  -> Les des doivent etre places sur le plateau d'une maniere speciale pour gagner des points:\n");
+    printf("    -> Chaque ligne contenant 5 des de valeurs differentes rapporte 5 points\n");
+    printf("    -> Chaque colonne contenant 4 des de couleurs differentes rapporte 5 points\n");
+    printf("    -> Chaque de de couleur violet rapport un nombre de points equivalents a sa valeur\n\n");
+
+    printf("  -> Le joueur avec le plus de points a la fin des 10 tours gagne\n\n");
+
+    printf("-> Appuyez sur 'entrer' pour revenir au menu\n");
+} 
