@@ -122,7 +122,8 @@ void play_game(struct board* player_board, struct board* bot_board, struct die**
         printf("-> Vous avez perdu!\n");
     } else {
         printf("-> Egalite!\n");
-    }}
+    }
+}
 
 void game_menu() {
     for (;;) {
