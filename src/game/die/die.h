@@ -9,26 +9,26 @@
 #define DIE_ART_LENGTH 5
 #define DIE_ART_WIDTH 9
 
-typedef struct {
+struct die {
     int value;
     int color;
-} die; // 8 bytes
+}; // 8 bytes
 
-extern die* create_die(int color, int value);
-extern die* copy_die(die* d);
-extern void free_die(die* d);
+extern struct die* create_die(int color, int value);
+extern struct die* copy_die(struct die* d);
+extern void free_die(struct die* d);
 
-extern die** create_dice_set();
-extern die** copy_dice_set(die** dice_set);
+extern struct die** create_dice_set();
+extern struct die** copy_dice_set(struct die** dice_set);
 
-extern die** copy_dice(die** dice, int size);
-extern void free_dice_copy(die** dice_copy, int size);
+extern struct die** copy_dice(struct die** dice, int size);
+extern void free_dice_copy(struct die** dice_copy, int size);
 
-// extern die** copy_dice_array(die** dice, int size);
-extern die* get_random_die(die** dice_set);
+// extern struct die** copy_dice_array(struct die** dice, int size);
+extern struct die* get_random_die(struct die** dice_set);
 
-extern die** get_dice(die** dice_set, int number);
-extern void free_dice(die** dice_set, int size);
+extern struct die** get_dice(struct die** dice_set, int number);
+extern void free_dice(struct die** dice_set, int size);
 
 
 

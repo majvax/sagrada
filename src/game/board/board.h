@@ -13,16 +13,16 @@
 #define EXTRA_RULES 0 // 1 if extra rule is enabled, 0 otherwise
 
 
-typedef struct {
-    die* grid[ROW][COLUMN];
-} board; // 4*5*sizeof(die) + sizeof(int) = 160 bytes
+struct board {
+    struct die* grid[ROW][COLUMN];
+}; // 4*5*sizeof(die) + sizeof(int) = 160 bytes
 
-extern board* create_board();
-extern board* copy_board(board* b);
-extern void free_board(board* b);
-extern bool place_die(board* b, die* d, int posx, int posy);
+extern struct board* create_board();
+extern struct board* copy_board(struct board* b);
+extern void free_board(struct board* b);
+extern bool place_die(struct board* b, struct die* d, int posx, int posy);
 
-extern int calculate_points(board* b);
+extern int calculate_points(struct board* b);
 
 
 

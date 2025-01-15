@@ -1,7 +1,7 @@
 #include "config.h"
 
 
-static Config* config = NULL;
+static struct Config* config = NULL;
 
 
 void create_config_file(const char* filepath) {
@@ -20,7 +20,7 @@ void create_config_file(const char* filepath) {
 
 
 
-void populate_config(Config* c) {
+void populate_config(struct Config* c) {
     if (c == NULL) {
         return;
     }
@@ -32,7 +32,7 @@ void populate_config(Config* c) {
 
 bool init_config(const char* filepath) {
     if (config == NULL) {
-        config = (Config*)malloc(sizeof(Config));
+        config = (struct Config*)malloc(sizeof(struct Config));
         populate_config(config);
     }
 
@@ -48,6 +48,10 @@ bool init_config(const char* filepath) {
         char* key = strtok(line, "=");
         char* value = strtok(NULL, "=");
 
+        if (key == NULL || value == NULL) {
+            continue;
+        }
+
 
         if (strcmp(key, "simulations") == 0) {
             config->simulations = atoi(value);
@@ -62,11 +66,11 @@ bool init_config(const char* filepath) {
     return true;
 }
 
-const Config* get_config(void) {
+const struct Config* get_config(void) {
     return config;
 }
 
-Config* get_mutable_config(void) {
+struct Config* get_mutable_config(void) {
     return config;
 }
 
@@ -79,7 +83,7 @@ void free_config(void) {
 
 
 void print_config(void) {
-    const Config* c = get_config();
+    const struct Config* c = get_config();
     printf("simulations: %d\n", c->simulations);
     printf("colors: %s\n", c->nocolors ? "false" : "true");
     printf("difficulty: %d\n", c->difficulty);

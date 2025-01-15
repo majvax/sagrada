@@ -1,7 +1,7 @@
 #include "logic.h"
 
 
-void player_turn(board* player_board, die** dice, int dice_left) {
+void player_turn(struct board* player_board, struct die** dice, int dice_left) {
     int choice = get_int_range("-> Choisissez un de (%d-%d): ", 1, dice_left);
     // decrement the choice to match the real index (if dice 1 and 2 are placed, the choice 1 will
     // be the 3rd dice)
@@ -23,7 +23,7 @@ void player_turn(board* player_board, die** dice, int dice_left) {
     dice[choice - 1] = NULL;
 }
 
-void bot_turn(board* bot_board, board* player_board, die** dice, die** dice_set_copy, int rounds_remaining, int priority) {
+void bot_turn(struct board* bot_board, struct board* player_board, struct die** dice, struct die** dice_set_copy, int rounds_remaining, int priority) {
     time_t t = time(NULL);
     int dice_index =
         make_move(bot_board, dice, player_board, dice_set_copy, rounds_remaining, priority);
@@ -32,7 +32,7 @@ void bot_turn(board* bot_board, board* player_board, die** dice, die** dice_set_
     while (time(NULL) - t < 1);
 }
 
-void round_menu(int rounds, board* player_board, board* bot_board, die** dice) {
+void round_menu(int rounds, struct board* player_board, struct board* bot_board, struct die** dice) {
     clear();
     printf("-> TOUR %d\n\n\n", rounds);
     print_boards(player_board, bot_board);
@@ -44,8 +44,8 @@ void round_menu(int rounds, board* player_board, board* bot_board, die** dice) {
     printf("\n");
 }
 
-void play_round(int rounds, die** dice_set, board* player_board, board* bot_board, int priority) {
-    die** dice = get_dice(dice_set, 5);
+void play_round(int rounds, struct die** dice_set, struct board* player_board, struct board* bot_board, int priority) {
+    struct die** dice = get_dice(dice_set, 5);
     int dice_left = 5;
     int rounds_remaining = 11 - rounds;
 
@@ -102,7 +102,7 @@ void play_round(int rounds, die** dice_set, board* player_board, board* bot_boar
     free_dice(dice, 5);
 }
 
-void play_game(board* player_board, board* bot_board, die** dice_set) {
+void play_game(struct board* player_board, struct board* bot_board, struct die** dice_set) {
     int priority = rand() % 2;
 
     for (int rounds = 1; rounds < 11; rounds++) {

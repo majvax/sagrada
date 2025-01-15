@@ -1,6 +1,6 @@
 #include "art.h"
 
-const char** get_ascii_die(die* d) {
+const char** get_ascii_die(struct die* d) {
     if (d == NULL) {
         return die_empty;
     }
@@ -20,7 +20,7 @@ const char** get_ascii_die(die* d) {
     }
 }
 
-void print_die(die* d) {
+void print_die(struct die* d) {
     char* color = (d != NULL) ? get_ansi_code(d->color) : ANSI_RESET;
     const char** art = get_ascii_die(d);
 
@@ -31,7 +31,7 @@ void print_die(die* d) {
     }
 }
 
-void print_dice(die** dice, int size) {
+void print_dice(struct die** dice, int size) {
     for (int i = 0; i < size; i++) {
         if (dice[i] == NULL)
             continue;
@@ -43,11 +43,43 @@ void print_dice(die** dice, int size) {
     move_down(DIE_ART_LENGTH);
 }
 
-void print_boards(board* b, board* b2) {
+void print_boards(struct board* b, struct board* b2) {
+
+    // Print Column indice numbers
+    printf("\t");
+    for (int i = 1; i < COLUMN+1; i++) {
+        for (int j = 0; j < DIE_ART_WIDTH/2; j++) {
+            printf(" ");
+        }
+        printf("%d", i);
+        for (int j = 0; j < DIE_ART_WIDTH/2+1; j++) {
+            printf(" ");
+        }
+    }
+    printf("\t");
+    for (int i = 1; i < COLUMN+1; i++) {
+        for (int j = 0; j < DIE_ART_WIDTH/2; j++) {
+            printf(" ");
+        }
+        printf("%d", i);
+        for (int j = 0; j < DIE_ART_WIDTH/2+1; j++) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+
+
+
     for (int i = 0; i < ROW; i++) {
         printf("\t");
+        // Print Row indice numbers
+        move_left(2);
+        move_down(DIE_ART_LENGTH/2);
+        printf("%d ", i+1);
+        move_up(DIE_ART_LENGTH/2);
+
         for (int j = 0; j < COLUMN; j++) {
-            die* d = b->grid[i][j];
+            struct die* d = b->grid[i][j];
 
             print_die(d);
 
@@ -58,7 +90,7 @@ void print_boards(board* b, board* b2) {
         printf("\t");
 
         for (int j = 0; j < COLUMN; j++) {
-            die* d = b2->grid[i][j];
+            struct die* d = b2->grid[i][j];
 
             print_die(d);
 

@@ -1,9 +1,9 @@
 #include "board.h"
 
 
-board* create_board() {
+struct board* create_board() {
     // allocate 160 bytes for the board
-    board* b = malloc(sizeof(board));
+    struct board* b = malloc(sizeof(struct board));
     assert(b != NULL && "create_board: Memory allocation failed");
 
     // initiate every dice to NULL
@@ -14,8 +14,8 @@ board* create_board() {
     return b;
 }
 
-board* copy_board(board* b) {
-    board* copy = create_board();
+struct board* copy_board(struct board* b) {
+    struct board* copy = create_board();
     for (int i = 0; i < ROW; i++)
         for (int j = 0; j < COLUMN; j++)
             if (b->grid[i][j] != NULL)
@@ -25,7 +25,7 @@ board* copy_board(board* b) {
     return copy;
 }
 
-void free_board(board* b) {
+void free_board(struct board* b) {
     if (b == NULL)
         return;
     for (int i = 0; i < ROW; i++) {
@@ -39,7 +39,7 @@ void free_board(board* b) {
     free(b);
 }
 
-bool place_die(board* b, die* d, int posx, int posy) {
+bool place_die(struct board* b, struct die* d, int posx, int posy) {
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
         return false;
     if (b->grid[posx][posy] != NULL)
@@ -48,7 +48,7 @@ bool place_die(board* b, die* d, int posx, int posy) {
     return true;
 }
 
-int calculate_row(board* b, int row) {
+int calculate_row(struct board* b, int row) {
     for (int i = 0; i < COLUMN; i++) {
         if (b->grid[row][i] == NULL)
             return 0;
@@ -71,7 +71,7 @@ int calculate_row(board* b, int row) {
     return 5;
 }
 
-int calculate_column(board* b, int column) {
+int calculate_column(struct board* b, int column) {
     for (int i = 0; i < ROW; i++) {
         if (b->grid[i][column] == NULL)
             return 0;
@@ -94,7 +94,7 @@ int calculate_column(board* b, int column) {
     return 5;
 }
 
-int calculate_points(board* b) {
+int calculate_points(struct board* b) {
     int score = 0;
     for (int i = 0; i < ROW; i++)
         score += calculate_row(b, i);

@@ -1,15 +1,10 @@
 #include "argparser.h"
 
 
-typedef struct {
-    const char* arg;
-    const char* value;
-    bool boolean_value;
-} Argument;
 
 
 
-bool get_argument(Argument* arg, int argc, char* argv[], int index, bool has_value) {
+bool get_argument(struct Argument* arg, int argc, char* argv[], int index, bool has_value) {
     if (index >= argc || (has_value && index + 1 >= argc) || argv == NULL) {
         return false;
     }
@@ -40,14 +35,14 @@ void print_args(void) {
 bool parse_args(int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--config") == 0) {
-            Argument arg;
+            struct Argument arg;
             if (get_argument(&arg, argc, argv, i++, true) && arg.value != NULL)
                 init_config(arg.value);
         }
     }
 
-    Config* config = get_mutable_config();
-    Argument arg;
+    struct Config* config = get_mutable_config();
+    struct Argument arg;
 
     for (int i = 1; i < argc; i++) {
         if (argv[i] == NULL) {

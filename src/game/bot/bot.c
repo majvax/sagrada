@@ -1,7 +1,7 @@
 #include "bot.h"
 
 
-void bot_random_move(board* b, die** dice, int* dice_left) {
+void bot_random_move(struct board* b, struct die** dice, int* dice_left) {
     int die_indices[5];
     int num_dice = 0;
 
@@ -15,7 +15,7 @@ void bot_random_move(board* b, die** dice, int* dice_left) {
         return;
 
     int die_index = die_indices[rand() % num_dice];
-    die* d = dice[die_index];
+    struct die* d = dice[die_index];
 
     int empty_positions[ROW * COLUMN][2];
     int num_positions = 0;
@@ -43,14 +43,14 @@ void bot_random_move(board* b, die** dice, int* dice_left) {
     (*dice_left)--;
 }
 
-void opponent_random_move(board* b, die** dice, int* dice_left) {
+void opponent_random_move(struct board* b, struct die** dice, int* dice_left) {
     bot_random_move(b, dice, dice_left);
 }
 
-void simulate_game(board* bot_board, board* opp_board, die** dice_set, int rounds_remaining,
+void simulate_game(struct board* bot_board, struct board* opp_board, struct die** dice_set, int rounds_remaining,
                    int priority) {
     for (int r = 0; r < rounds_remaining; ++r) {
-        die** dice = get_dice(dice_set, 5);
+        struct die** dice = get_dice(dice_set, 5);
         int dice_left = 5;
 
         if (!priority) {
@@ -78,7 +78,7 @@ void simulate_game(board* bot_board, board* opp_board, die** dice_set, int round
     }
 }
 
-int make_move(board* b, die** dice, board* opponent_board, die** dice_set, int rounds_remaining,
+int make_move(struct board* b, struct die** dice, struct board* opponent_board, struct die** dice_set, int rounds_remaining,
               int priority) {
     int best_die_index = -1;
     int best_x = -1, best_y = -1;
@@ -86,7 +86,7 @@ int make_move(board* b, die** dice, board* opponent_board, die** dice_set, int r
 
     // For each die
     for (int i = 0; i < 5; i++) {
-        die* d = dice[i];
+        struct die* d = dice[i];
         if (d == NULL)
             continue;
 
@@ -104,11 +104,11 @@ int make_move(board* b, die** dice, board* opponent_board, die** dice_set, int r
 
                 for (int sim = 0; sim < get_config()->simulations; sim++) {
                     // Copy boards and dice set for simulation
-                    board* b_copy = copy_board(b);
-                    board* opp_copy = copy_board(opponent_board);
-                    die** dice_set_copy = copy_dice_set(dice_set);
+                    struct board* b_copy = copy_board(b);
+                    struct board* opp_copy = copy_board(opponent_board);
+                    struct die** dice_set_copy = copy_dice_set(dice_set);
 
-                    die** dice_copy = copy_dice(dice, 5);
+                    struct die** dice_copy = copy_dice(dice, 5);
 
                     // Apply the move
                     place_die(b_copy, d, x, y);

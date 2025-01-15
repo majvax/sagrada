@@ -13,10 +13,10 @@
 
 
 
-extern const char** get_ascii_die(die* d);
-extern void print_die(die* d);
-extern void print_dice(die** dice, int size);
-extern void print_boards(board* b, board* b2);
+extern const char** get_ascii_die(struct die* d);
+extern void print_die(struct die* d);
+extern void print_dice(struct die** dice, int size);
+extern void print_boards(struct board* b, struct board* b2);
 
 
 extern const char* die_1[5];

@@ -2,10 +2,10 @@
 #include "art.h"
 #include "bot.h"
 
-extern void player_turn(board* b, die** dice, int dice_left);
-extern void bot_turn(board* b, board* player_board, die** dice, die** dice_set, int rounds_remaining, int priority);
-extern void round_menu(int rounds, board* player_board, board* bot_board, die** dice);
-extern void play_round(int rounds, die** dice_set, board* player_board, board* bot_board, int priority);
-extern void play_game(board* player_board, board* bot_board, die** dice_set);
+extern void player_turn(struct board* b, struct die** dice, int dice_left);
+extern void bot_turn(struct board* b, struct board* player_board,struct die** dice, struct die** dice_set, int rounds_remaining, int priority);
+extern void round_menu(int rounds, struct board* player_board,struct  board* bot_board, struct die** dice);
+extern void play_round(int rounds, struct die** dice_set, struct board* player_board, struct board* bot_board, int priority);
+extern void play_game(struct board* player_board, struct board* bot_board, struct die** dice_set);
 extern void game_menu();
 extern void print_rules();

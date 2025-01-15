@@ -21,9 +21,9 @@ int main(int argc, char* argv[]) {
     game_menu();
 
 
-    die** dice_set = create_dice_set();
-    board* player_board = create_board();
-    board* bot_board = create_board();
+    struct die** dice_set = create_dice_set();
+    struct board* player_board = create_board();
+    struct board* bot_board = create_board();
 
 
     play_game(player_board, bot_board, dice_set);
