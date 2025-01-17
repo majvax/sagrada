@@ -1,9 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <stdbool.h>
 #include "color.h"
 #include "die.h"
+#include <stdbool.h>
+
 
 
 #define ROW 4

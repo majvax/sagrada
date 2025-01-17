@@ -1,16 +1,18 @@
+#include "argparser.h"
+#include "config.h"
+#include "logic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "logic.h"
-#include "config.h"
-#include "argparser.h"
+
 
 
 int main(int argc, char* argv[]) {
     srand((unsigned)time(NULL));
 
     if (!init_config(DEFAULT_CONFIG_FILE)) {
-        printf("-> Fichier de configuration introuvable\n\t-> Creation du fichier de configuration par defaut...\n");
+        printf("-> Fichier de configuration introuvable\n\t-> Creation du fichier de configuration "
+               "par defaut...\n");
         scanf("%*c");
     }
 

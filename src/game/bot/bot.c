@@ -47,8 +47,8 @@ void opponent_random_move(struct board* b, struct die** dice, int* dice_left) {
     bot_random_move(b, dice, dice_left);
 }
 
-void simulate_game(struct board* bot_board, struct board* opp_board, struct die** dice_set, int rounds_remaining,
-                   int priority) {
+void simulate_game(struct board* bot_board, struct board* opp_board, struct die** dice_set,
+                   int rounds_remaining, int priority) {
     for (int r = 0; r < rounds_remaining; ++r) {
         struct die** dice = get_dice(dice_set, 5);
         int dice_left = 5;
@@ -78,8 +78,8 @@ void simulate_game(struct board* bot_board, struct board* opp_board, struct die*
     }
 }
 
-int make_move(struct board* b, struct die** dice, struct board* opponent_board, struct die** dice_set, int rounds_remaining,
-              int priority) {
+int make_move(struct board* b, struct die** dice, struct board* opponent_board,
+              struct die** dice_set, int rounds_remaining, int priority) {
     int best_die_index = -1;
     int best_x = -1, best_y = -1;
     double best_score = -1e9;

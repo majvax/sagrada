@@ -1,8 +1,9 @@
-#include "string.h"
+#include "config.h"
+#include "stdbool.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "stdbool.h"
-#include "config.h"
+#include "string.h"
+
 
 #define OPTION_WIDTH 30
 

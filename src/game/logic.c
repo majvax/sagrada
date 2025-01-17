@@ -23,16 +23,19 @@ void player_turn(struct board* player_board, struct die** dice, int dice_left) {
     dice[choice - 1] = NULL;
 }
 
-void bot_turn(struct board* bot_board, struct board* player_board, struct die** dice, struct die** dice_set_copy, int rounds_remaining, int priority) {
+void bot_turn(struct board* bot_board, struct board* player_board, struct die** dice,
+              struct die** dice_set_copy, int rounds_remaining, int priority) {
     time_t t = time(NULL);
     int dice_index =
         make_move(bot_board, dice, player_board, dice_set_copy, rounds_remaining, priority);
     free_die(dice[dice_index]);
     dice[dice_index] = NULL;
-    while (time(NULL) - t < 1);
+    while (time(NULL) - t < 1)
+        ;
 }
 
-void round_menu(int rounds, struct board* player_board, struct board* bot_board, struct die** dice) {
+void round_menu(int rounds, struct board* player_board, struct board* bot_board,
+                struct die** dice) {
     clear();
     printf("-> TOUR %d\n\n\n", rounds);
     print_boards(player_board, bot_board);
@@ -44,7 +47,8 @@ void round_menu(int rounds, struct board* player_board, struct board* bot_board,
     printf("\n");
 }
 
-void play_round(int rounds, struct die** dice_set, struct board* player_board, struct board* bot_board, int priority) {
+void play_round(int rounds, struct die** dice_set, struct board* player_board,
+                struct board* bot_board, int priority) {
     struct die** dice = get_dice(dice_set, 5);
     int dice_left = 5;
     int rounds_remaining = 11 - rounds;
@@ -137,10 +141,20 @@ void game_menu() {
         int choice = get_int_range("-> Choisissez une option (%d-%d): ", 1, 4);
 
         switch (choice) {
-            case 1: return;
-            case 2: clear(); print_rules(); wait_for_enter(); break;
-            case 3: clear(); print_config(); wait_for_enter(); break;
-            case 4: exit(0);
+        case 1:
+            return;
+        case 2:
+            clear();
+            print_rules();
+            wait_for_enter();
+            break;
+        case 3:
+            clear();
+            print_config();
+            wait_for_enter();
+            break;
+        case 4:
+            exit(0);
         }
     }
 }
@@ -149,18 +163,21 @@ void print_rules() {
     printf("-> REGLES\n\n");
     printf("  -> Le jeu se joue en 10 tours\n");
     printf("  -> A chaque tour, 5 des sont tires aleatoirement d'un sac de 90 des\n");
-    printf("  -> Un des 2 joueurs est choisis aleatoirement pour etre le premier joueur, a chaque tour les roles sont inverse\n");
+    printf("  -> Un des 2 joueurs est choisis aleatoirement pour etre le premier joueur, a chaque "
+           "tour les roles sont inverse\n");
     printf("  -> Le premier joueur choisit un de et le place sur son plateau\n");
     printf("  -> Le deuxieme joueur choisit deux des et les place sur son plateau\n");
     printf("  -> Le premier joueur choisit un dernier de et les place sur son plateau\n");
     printf("  -> Finalement, le dernier de est defausse\n\n");
 
-    printf("  -> Les des doivent etre places sur le plateau d'une maniere speciale pour gagner des points:\n");
+    printf("  -> Les des doivent etre places sur le plateau d'une maniere speciale pour gagner des "
+           "points:\n");
     printf("    -> Chaque ligne contenant 5 des de valeurs differentes rapporte 5 points\n");
     printf("    -> Chaque colonne contenant 4 des de couleurs differentes rapporte 5 points\n");
-    printf("    -> Chaque de de couleur violet rapport un nombre de points equivalents a sa valeur\n\n");
+    printf("    -> Chaque de de couleur violet rapport un nombre de points equivalents a sa "
+           "valeur\n\n");
 
     printf("  -> Le joueur avec le plus de points a la fin des 10 tours gagne\n\n");
 
     printf("-> Appuyez sur 'entrer' pour revenir au menu\n");
-} 
+}

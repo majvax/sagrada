@@ -66,13 +66,9 @@ bool init_config(const char* filepath) {
     return true;
 }
 
-const struct Config* get_config(void) {
-    return config;
-}
+const struct Config* get_config(void) { return config; }
 
-struct Config* get_mutable_config(void) {
-    return config;
-}
+struct Config* get_mutable_config(void) { return config; }
 
 void free_config(void) {
     if (config != NULL) {
@@ -88,4 +84,3 @@ void print_config(void) {
     printf("colors: %s\n", c->nocolors ? "false" : "true");
     printf("difficulty: %d\n", c->difficulty);
 }
-

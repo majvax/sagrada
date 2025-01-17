@@ -61,9 +61,9 @@ int calculate_row(struct board* b, int row) {
         }
     }
 
-    // extra rule (if 5 dice in a row are different value -> 5pts, and if they are same color -> 10pts)
-    if (EXTRA_RULES &&
-        b->grid[row][0]->color == b->grid[row][1]->color &&
+    // extra rule (if 5 dice in a row are different value -> 5pts, and if they are same color ->
+    // 10pts)
+    if (EXTRA_RULES && b->grid[row][0]->color == b->grid[row][1]->color &&
         b->grid[row][1]->color == b->grid[row][2]->color &&
         b->grid[row][2]->color == b->grid[row][3]->color &&
         b->grid[row][3]->color == b->grid[row][4]->color)
@@ -84,9 +84,9 @@ int calculate_column(struct board* b, int column) {
         }
     }
 
-    // extra rule (if 4 dice in a column are different colors -> 5pts, and if they are same value -> 10pts)
-    if (EXTRA_RULES &&
-        b->grid[0][column]->value == b->grid[1][column]->value &&
+    // extra rule (if 4 dice in a column are different colors -> 5pts, and if they are same value ->
+    // 10pts)
+    if (EXTRA_RULES && b->grid[0][column]->value == b->grid[1][column]->value &&
         b->grid[1][column]->value == b->grid[2][column]->value &&
         b->grid[2][column]->value == b->grid[3][column]->value)
         return 10;
@@ -112,4 +112,3 @@ int calculate_points(struct board* b) {
 
     return score;
 }
-

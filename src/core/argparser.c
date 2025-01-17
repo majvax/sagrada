@@ -2,8 +2,6 @@
 
 
 
-
-
 bool get_argument(struct Argument* arg, int argc, char* argv[], int index, bool has_value) {
     if (index >= argc || (has_value && index + 1 >= argc) || argv == NULL) {
         return false;
@@ -52,8 +50,8 @@ bool parse_args(int argc, char* argv[]) {
         if (strcmp(argv[i], "-h") == 0) {
             print_args();
             return false;
-        } 
-        else if (strcmp(argv[i], "--difficulty") == 0 && get_argument(&arg, argc, argv, i++, true))
+        } else if (strcmp(argv[i], "--difficulty") == 0 &&
+                   get_argument(&arg, argc, argv, i++, true))
             config->difficulty = atoi(arg.value);
         else if (strcmp(argv[i], "--simulations") == 0 && get_argument(&arg, argc, argv, i++, true))
             config->simulations = atoi(arg.value);
