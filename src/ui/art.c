@@ -32,6 +32,12 @@ void print_die(struct die* d) {
 }
 
 void print_dice(struct die** dice, int size) {
+    int nb_dice = 0;
+    for (int i = 0; i < size; i++) {
+        if (dice[i] != NULL)
+            printf("    %d      ", ++nb_dice);
+    }
+    printf("\n");
     for (int i = 0; i < size; i++) {
         if (dice[i] == NULL)
             continue;

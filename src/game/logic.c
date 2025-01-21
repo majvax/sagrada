@@ -71,9 +71,9 @@ void play_game(struct Game* game) {
         calculate_points(game->bot_board));
 
     if (calculate_points(game->player_board) > calculate_points(game->bot_board)) {
-        printf("-> Le joueur %s a gagne\n", game->player1);
+        printf("-> %s a gagne\n", game->player1);
     } else if (calculate_points(game->player_board) < calculate_points(game->bot_board)) {
-        printf("-> Le joueur %s a gagne\n", game->player2);
+        printf("-> %s a gagne\n", game->player2);
     } else {
         printf("-> C'est une Egalite!\n");
     }
@@ -84,7 +84,7 @@ int game_menu() {
         clear();
         printf("-> BIENVENUE DANS LE JEU DE SAGRADA\n\n");
         printf("  -> 1. Partie a 1 joueur\n");
-        printf("  -> 2. Partie a 2 joueur\n");
+        printf("  -> 2. Partie a 2 joueurs\n");
         printf("  -> 3. Partie a 2 bots\n");
         printf("  -> 4. Regles\n");
         printf("  -> 5. Configurations\n");
@@ -138,7 +138,10 @@ void print_rules() {
 
 void round_menu(struct Game* game, int rounds) {
     clear();
-    printf("-> TOUR %d\n\n\n", rounds);
+    printf("-> TOUR %d\n", rounds);
+    game->priority ? printf("-> C'est %s qui commence ce tour\n\n", game->player1)
+                   : printf("-> C'est %s qui commence ce tour\n\n", game->player2);
+
     print_boards(game->player_board, game->bot_board);
     printf("\n\n");
     printf("-> Score de %s: %d\n-> Score de %s: %d\n\n",
@@ -147,7 +150,7 @@ void round_menu(struct Game* game, int rounds) {
         game->player2,
         calculate_points(game->bot_board));
 
-    printf("-> Voici les des de ce tour\n");
+    printf("-> Voici les des de ce tour\n\n");
     print_dice(game->dice, 5);
     printf("\n");
 
