@@ -10,4 +10,5 @@ extern void clear();
 extern void sleep(int ms);
 
 extern int get_int_range(char* prompt, int from, int to);
+char* ask_for_name(char* prompt);
 extern void wait_for_enter();

@@ -1,5 +1,5 @@
 #include "terminal.h"
-
+#include <stdlib.h>
 
 
 void move_up(int n) { printf("\033[%dA", n); }
@@ -26,6 +26,13 @@ int get_int_range(char* prompt, int from, int to) {
         scanf("%d", &choice);
     } while (choice < from || choice > to);
     return choice;
+}
+
+char* ask_for_name(char* prompt) {
+    char* name = malloc(sizeof(char) * 100);
+    printf("%s", prompt);
+    scanf("%s", name);
+    return name;
 }
 
 

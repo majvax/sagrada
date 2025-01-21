@@ -1,7 +1,7 @@
 #include "config.h"
 
 
-static struct Config* config = NULL;
+struct Config* config = NULL;
 
 
 void create_config_file(const char* filepath) {
@@ -67,8 +67,6 @@ int init_config(const char* filepath) {
 }
 
 const struct Config* get_config(void) { return config; }
-
-struct Config* get_mutable_config(void) { return config; }
 
 void free_config(void) {
     if (config != NULL) {

@@ -18,7 +18,6 @@ struct Config {
 
 extern int init_config(const char* filepath);
 extern const struct Config* get_config(void);
-extern struct Config* get_mutable_config(void);
 extern void free_config(void);
 extern void print_config(void);
 

@@ -1,159 +1,113 @@
 #include "logic.h"
+#include "name.h"
 
 
-void player_turn(struct board* player_board, struct die** dice, int dice_left) {
+void player_turn(struct Game* game, struct board* board, int dice_left) {
     int choice = get_int_range("-> Choisissez un de (%d-%d): ", 1, dice_left);
     // decrement the choice to match the real index (if dice 1 and 2 are placed, the choice 1 will
     // be the 3rd dice)
     for (int i = 0; i < choice; i++)
-        if (dice[i] == NULL)
+        if (game->dice[i] == NULL)
             choice++;
 
 
     int x = get_int_range("-> Choisissez ou le placer (position x de %d a %d): ", 1, COLUMN);
     int y = get_int_range("-> Choisissez ou le placer (position y de %d a %d): ", 1, ROW);
 
-    while (place_die(player_board, dice[choice - 1], y - 1, x - 1) == 0) {
+    while (place_die(board, game->dice[choice - 1], y - 1, x - 1) == 0) {
         printf("-> Impossible de placer le de a cet endroit\n");
         x = get_int_range("-> Choisissez ou le placer (position x de %d a %d): ", 1, COLUMN);
         y = get_int_range("-> Choisissez ou le placer (position y de %d a %d): ", 1, ROW);
     }
 
-    free_die(dice[choice - 1]);
-    dice[choice - 1] = NULL;
+    free_die(game->dice[choice - 1]);
+    game->dice[choice - 1] = NULL;
 }
 
-void bot_turn(struct board* bot_board, struct board* player_board, struct die** dice,
-              struct die** dice_set_copy, int rounds_remaining, int priority) {
+void bot_turn(struct Game* game, struct board* board1, struct board* board2, int rounds_remaining) {
     time_t t = time(NULL);
     int dice_index =
-        make_move(bot_board, dice, player_board, dice_set_copy, rounds_remaining, priority);
-    free_die(dice[dice_index]);
-    dice[dice_index] = NULL;
+        make_move(board1, game->dice, board2, game->dice_set, rounds_remaining, game->priority);
+    free_die(game->dice[dice_index]);
+    game->dice[dice_index] = NULL;
     while (time(NULL) - t < 1)
         ;
 }
 
-void round_menu(int rounds, struct board* player_board, struct board* bot_board,
-                struct die** dice) {
-    clear();
-    printf("-> TOUR %d\n\n\n", rounds);
-    print_boards(player_board, bot_board);
-    printf("\n\n");
-    printf("-> Votre score: %d\n-> Score adverse: %d\n\n", calculate_points(player_board),
-           calculate_points(bot_board));
-    printf("-> Voici les des de ce tour\n");
-    print_dice(dice, 5);
-    printf("\n");
-}
+void play_game(struct Game* game) {
+    game->priority = rand() % 2;
 
-void play_round(int rounds, struct die** dice_set, struct board* player_board,
-                struct board* bot_board, int priority) {
-    struct die** dice = get_dice(dice_set, 5);
-    int dice_left = 5;
-    int rounds_remaining = 11 - rounds;
-
-    round_menu(rounds, player_board, bot_board, dice);
-
-
-
-    // bot against bot for testing purposes
-    // if (priority) {
-    //     bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
-    //     round_menu(rounds, player_board, bot_board, dice);
-    //     bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-    //     round_menu(rounds, player_board, bot_board, dice);
-    //     bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-    //     round_menu(rounds, player_board, bot_board, dice);
-    //     bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
-    // } else {
-    //     bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-    //     round_menu(rounds, player_board, bot_board, dice);
-    //     bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
-    //     round_menu(rounds, player_board, bot_board, dice);
-    //     bot_turn(player_board, bot_board, dice, dice_set, rounds_remaining, priority);
-    //     round_menu(rounds, player_board, bot_board, dice);
-    //     bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-    // }
-
-    // free_dice(dice, 5);
-    // return;
-
-
-
-    if (priority) {
-        player_turn(player_board, dice, dice_left--);
-        round_menu(rounds, player_board, bot_board, dice);
-        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-        dice_left--;
-        round_menu(rounds, player_board, bot_board, dice);
-        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-        dice_left--;
-        round_menu(rounds, player_board, bot_board, dice);
-        player_turn(player_board, dice, dice_left--);
+    
+    if (game->mode == 2) {
+        game->player1 = ask_for_name("-> Entrez le nom du joueur 1: ");
+        game->player2 = ask_for_name("-> Entrez le nom du joueur 2: ");
+    } else if (game->mode == 1) {
+        game->player1 = ask_for_name("-> Entrez le nom du joueur 1: ");
+        game->player2 = get_random_name();
     } else {
-        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-        dice_left--;
-        round_menu(rounds, player_board, bot_board, dice);
-        player_turn(player_board, dice, dice_left--);
-        round_menu(rounds, player_board, bot_board, dice);
-        player_turn(player_board, dice, dice_left--);
-        round_menu(rounds, player_board, bot_board, dice);
-        bot_turn(bot_board, player_board, dice, dice_set, rounds_remaining, priority);
-        dice_left--;
+        game->player1 = get_random_name();
+        game->player2 = get_random_name();
     }
 
-    free_dice(dice, 5);
-}
-
-void play_game(struct board* player_board, struct board* bot_board, struct die** dice_set) {
-    int priority = rand() % 2;
 
     for (int rounds = 1; rounds < 11; rounds++) {
-        play_round(rounds, dice_set, player_board, bot_board, priority);
-        priority = !priority;
+        if (game->mode == 1)
+            player_against_bot(game, rounds);
+        else if (game->mode == 2)
+            player_against_player(game, rounds);
+        else
+            bot_against_bot(game, rounds);
+
+        game->priority = !game->priority;
     }
 
     clear();
-    print_boards(player_board, bot_board);
+    print_boards(game->player_board, game->bot_board);
     printf("\n\n");
-    printf("-> Votre score: %d\n-> Score adverse: %d\n\n", calculate_points(player_board),
-           calculate_points(bot_board));
+    printf("-> Score de %s: %d\n-> Score de %s: %d\n\n",
+        game->player1,
+        calculate_points(game->player_board),
+        game->player2,
+        calculate_points(game->bot_board));
 
-    if (calculate_points(player_board) > calculate_points(bot_board)) {
-        printf("-> Vous avez gagne!\n");
-    } else if (calculate_points(player_board) < calculate_points(bot_board)) {
-        printf("-> Vous avez perdu!\n");
+    if (calculate_points(game->player_board) > calculate_points(game->bot_board)) {
+        printf("-> Le joueur %s a gagne\n", game->player1);
+    } else if (calculate_points(game->player_board) < calculate_points(game->bot_board)) {
+        printf("-> Le joueur %s a gagne\n", game->player2);
     } else {
-        printf("-> Egalite!\n");
+        printf("-> C'est une Egalite!\n");
     }
 }
 
-void game_menu() {
+int game_menu() {
     for (;;) {
         clear();
         printf("-> BIENVENUE DANS LE JEU DE SAGRADA\n\n");
-        printf("  -> 1. Jouer\n");
-        printf("  -> 2. Regles\n");
-        printf("  -> 3. Configurations\n");
-        printf("  -> 4. Quitter\n\n");
+        printf("  -> 1. Partie a 1 joueur\n");
+        printf("  -> 2. Partie a 2 joueur\n");
+        printf("  -> 3. Partie a 2 bots\n");
+        printf("  -> 4. Regles\n");
+        printf("  -> 5. Configurations\n");
+        printf("  -> 6. Quitter\n\n");
 
-        int choice = get_int_range("-> Choisissez une option (%d-%d): ", 1, 4);
+        int choice = get_int_range("-> Choisissez une option (%d-%d): ", 1, 6);
 
         switch (choice) {
         case 1:
-            return;
         case 2:
+        case 3:
+            return choice;
+        case 4:
             clear();
             print_rules();
             wait_for_enter();
             break;
-        case 3:
+        case 5:
             clear();
             print_config();
             wait_for_enter();
             break;
-        case 4:
+        case 6:
             exit(0);
         }
     }
@@ -181,3 +135,114 @@ void print_rules() {
 
     printf("-> Appuyez sur 'entrer' pour revenir au menu\n");
 }
+
+void round_menu(struct Game* game, int rounds) {
+    clear();
+    printf("-> TOUR %d\n\n\n", rounds);
+    print_boards(game->player_board, game->bot_board);
+    printf("\n\n");
+    printf("-> Score de %s: %d\n-> Score de %s: %d\n\n",
+        game->player1,
+        calculate_points(game->player_board),
+        game->player2,
+        calculate_points(game->bot_board));
+
+    printf("-> Voici les des de ce tour\n");
+    print_dice(game->dice, 5);
+    printf("\n");
+
+}
+
+void player_against_bot(struct Game* game, int rounds) {
+    game->dice = get_dice(game->dice_set, 5);
+    int dice_left = 5;
+    int rounds_remaining = 11 - rounds;
+
+    round_menu(game, rounds);
+
+    if (game->priority) {
+        player_turn(game, game->player_board, dice_left--);
+        round_menu(game, rounds);
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        dice_left--;
+        round_menu(game, rounds);
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        dice_left--;
+        round_menu(game, rounds);
+        player_turn(game, game->player_board, dice_left--);
+    } else {
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        dice_left--;
+        round_menu(game, rounds);
+        player_turn(game, game->player_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->player_board, dice_left--);
+        round_menu(game, rounds);
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        dice_left--;
+    }
+
+    free_dice(game->dice, 5);
+}
+
+void bot_against_bot(struct Game* game, int rounds) {
+    game->dice = get_dice(game->dice_set, 5);
+    int dice_left = 5;
+    int rounds_remaining = 11 - rounds;
+
+    round_menu(game, rounds);
+
+
+
+    if (game->priority) {
+        bot_turn(game, game->player_board, game->bot_board, rounds_remaining);
+        round_menu(game, rounds);
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        round_menu(game, rounds);
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        round_menu(game, rounds);
+        bot_turn(game, game->player_board, game->bot_board, rounds_remaining);
+    } else {
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+        round_menu(game, rounds);
+        bot_turn(game, game->player_board, game->bot_board, rounds_remaining);
+        round_menu(game, rounds);
+        bot_turn(game, game->player_board, game->bot_board, rounds_remaining);
+        round_menu(game, rounds);
+        bot_turn(game, game->bot_board, game->player_board, rounds_remaining);
+    }
+
+    free_dice(game->dice, 5);
+}
+
+void player_against_player(struct Game* game, int rounds) {
+    game->dice = get_dice(game->dice_set, 5);
+    int dice_left = 5;
+    int rounds_remaining = 11 - rounds;
+
+    round_menu(game, rounds);
+
+
+
+    if (game->priority) {
+        player_turn(game, game->player_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->bot_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->bot_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->player_board, dice_left--);
+    } else {
+        player_turn(game, game->bot_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->player_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->player_board, dice_left--);
+        round_menu(game, rounds);
+        player_turn(game, game->bot_board, dice_left--);
+    }
+
+    free_dice(game->dice, 5);
+}
+
+
