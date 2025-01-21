@@ -1,11 +1,11 @@
 #include "die.h"
-
-
+#include "exit.h"
 
 struct die* create_die(int color, int value) {
     // allocating 8 bytes
     struct die* d = malloc(sizeof(struct die));
-    assert(d != NULL && "get_die_from_col_and_val: Memory allocation failed");
+    PRINT_AND_DIE_IF_COND_NOT_MEET(d == NULL, "Memory allocation failed", 1);
+
     d->value = value;
     d->color = color;
     return d;
@@ -26,7 +26,6 @@ struct die** create_dice_set() {
     // Allocate memory for an array of 90 die pointers
     // 90 * sizeof(struct die*) = 90 * 8 = 720 bytes allocated
     struct die** dice_set = malloc(sizeof(struct die*) * DICE_SET_SIZE);
-    assert(dice_set != NULL && "create_dice_set: Memory allocation failed");
 
     int index = 0;
     // create 3 dice for each value of each color
@@ -53,7 +52,9 @@ struct die** create_dice_set() {
 
 struct die** copy_dice_set(struct die** dice_set) {
     struct die** copy = malloc(sizeof(struct die*) * DICE_SET_SIZE);
-    assert(copy != NULL && "copy_dice_set: Memory allocation failed");
+    PRINT_AND_DIE_IF_COND_NOT_MEET(copy == NULL, "Memory allocation failed", 1);
+
+
     for (int i = 0; i < DICE_SET_SIZE; i++) {
         struct die* d = dice_set[i];
         if (d != NULL)
@@ -66,7 +67,8 @@ struct die** copy_dice_set(struct die** dice_set) {
 
 struct die** copy_dice(struct die** dice, int size) {
     struct die** dice_copy = (struct die**)malloc(sizeof(struct die*) * size);
-    assert(dice_copy != NULL && "copy_dice: Memory allocation failed");
+    PRINT_AND_DIE_IF_COND_NOT_MEET(dice_copy == NULL, "Memory allocation failed", 1);
+
     for (int i = 0; i < size; i++) {
         dice_copy[i] = copy_die(dice[i]);
     }
@@ -85,7 +87,8 @@ void free_dice_copy(struct die** dice_copy, int size) {
 
 struct die** copy_dice_array(struct die** dice_set, int size) {
     struct die** copy = malloc(sizeof(struct die*) * size);
-    assert(copy != NULL && "copy_dice_set: Memory allocation failed");
+    PRINT_AND_DIE_IF_COND_NOT_MEET(copy == NULL, "Memory allocation failed", 1);
+
     for (int i = 0; i < size; i++) {
         struct die* d = dice_set[i];
         if (d != NULL)
@@ -114,7 +117,8 @@ struct die* get_random_die(struct die** dice_set) {
 
 struct die** get_dice(struct die** dice_set, int number) {
     struct die** dice = malloc(sizeof(struct die*) * number);
-    assert(dice != NULL && "get_dice: Memory allocation failed");
+    PRINT_AND_DIE_IF_COND_NOT_MEET(dice == NULL, "Memory allocation failed", 1);
+
     for (int i = 0; i < number; i++) {
         dice[i] = get_random_die(dice_set);
     }

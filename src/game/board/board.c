@@ -4,7 +4,6 @@
 struct board* create_board() {
     // allocate 160 bytes for the board
     struct board* b = malloc(sizeof(struct board));
-    assert(b != NULL && "create_board: Memory allocation failed");
 
     // initiate every dice to NULL
     for (int i = 0; i < ROW; i++)
@@ -39,13 +38,13 @@ void free_board(struct board* b) {
     free(b);
 }
 
-bool place_die(struct board* b, struct die* d, int posx, int posy) {
+int place_die(struct board* b, struct die* d, int posx, int posy) {
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
-        return false;
+        return 0;
     if (b->grid[posx][posy] != NULL)
-        return false;
+        return 0;
     b->grid[posx][posy] = create_die(d->color, d->value);
-    return true;
+    return 1;
 }
 
 int calculate_row(struct board* b, int row) {

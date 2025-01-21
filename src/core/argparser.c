@@ -2,14 +2,14 @@
 
 
 
-bool get_argument(struct Argument* arg, int argc, char* argv[], int index, bool has_value) {
+int get_argument(struct Argument* arg, int argc, char* argv[], int index, int has_value) {
     if (index >= argc || (has_value && index + 1 >= argc) || argv == NULL) {
-        return false;
+        return 0;
     }
     arg->arg = argv[index];
     arg->value = has_value ? argv[index + 1] : NULL;
     arg->boolean_value = !has_value;
-    return true;
+    return 1;
 }
 
 
@@ -30,11 +30,11 @@ void print_args(void) {
 
 
 
-bool parse_args(int argc, char* argv[]) {
+int parse_args(int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--config") == 0) {
             struct Argument arg;
-            if (get_argument(&arg, argc, argv, i++, true) && arg.value != NULL)
+            if (get_argument(&arg, argc, argv, i++, 1) && arg.value != NULL)
                 init_config(arg.value);
         }
     }
@@ -49,18 +49,18 @@ bool parse_args(int argc, char* argv[]) {
 
         if (strcmp(argv[i], "-h") == 0) {
             print_args();
-            return false;
+            return 0;
         } else if (strcmp(argv[i], "--difficulty") == 0 &&
-                   get_argument(&arg, argc, argv, i++, true))
+                   get_argument(&arg, argc, argv, i++, 1))
             config->difficulty = atoi(arg.value);
-        else if (strcmp(argv[i], "--simulations") == 0 && get_argument(&arg, argc, argv, i++, true))
+        else if (strcmp(argv[i], "--simulations") == 0 && get_argument(&arg, argc, argv, i++, 1))
             config->simulations = atoi(arg.value);
         else if (strcmp(argv[i], "-c") == 0)
-            config->nocolors = true;
+            config->nocolors = 1;
         else {
             printf("-> Unknown option: %s\n", argv[i]);
-            return false;
+            return 0;
         }
     }
-    return true;
+    return 1;
 }

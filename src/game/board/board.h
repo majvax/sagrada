@@ -3,7 +3,6 @@
 
 #include "color.h"
 #include "die.h"
-#include <stdbool.h>
 
 
 
@@ -21,7 +20,7 @@ struct board {
 extern struct board* create_board();
 extern struct board* copy_board(struct board* b);
 extern void free_board(struct board* b);
-extern bool place_die(struct board* b, struct die* d, int posx, int posy);
+extern int place_die(struct board* b, struct die* d, int posx, int posy);
 
 extern int calculate_points(struct board* b);
 

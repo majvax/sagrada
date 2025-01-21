@@ -25,12 +25,12 @@ void populate_config(struct Config* c) {
         return;
     }
     c->simulations = 1000;
-    c->nocolors = false;
+    c->nocolors = 0;
     c->difficulty = 0;
 }
 
 
-bool init_config(const char* filepath) {
+int init_config(const char* filepath) {
     if (config == NULL) {
         config = (struct Config*)malloc(sizeof(struct Config));
         populate_config(config);
@@ -40,7 +40,7 @@ bool init_config(const char* filepath) {
 
     if (file == NULL) {
         create_config_file(filepath);
-        return false;
+        return 0;
     }
 
     char line[256];
@@ -63,7 +63,7 @@ bool init_config(const char* filepath) {
     }
 
     fclose(file);
-    return true;
+    return 1;
 }
 
 const struct Config* get_config(void) { return config; }

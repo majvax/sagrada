@@ -1,7 +1,6 @@
 #ifndef DIE_H
 #define DIE_H
 
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 

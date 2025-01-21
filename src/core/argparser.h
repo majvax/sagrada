@@ -1,5 +1,4 @@
 #include "config.h"
-#include "stdbool.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -11,8 +10,8 @@
 struct Argument {
     const char* arg;
     const char* value;
-    bool boolean_value;
+    int boolean_value;
 };
 
 
-extern bool parse_args(int argc, char* argv[]);
+extern int parse_args(int argc, char* argv[]);
