@@ -31,24 +31,26 @@ Pour construire et exécuter le projet, suivez les étapes ci-dessous :
    - Vous pouvez également télécharger le projet en tant que fichier ZIP et l'extraire sur votre machine.
 
 
-2. **Créer un répertoire de construction** :
+3. **Configurer le projet avec CMake** :
     ```bash
-    mkdir build
-    cd build
+    cmake -G "Ninja Multi-Config" -S . -B build
     ```
 
-3. **Configurer le projet avec CMake** :
-   ```bash
-   cmake ..
-   ```
 4. **Compiler le projet** :
-   ```bash
-   cmake --build .
-   ```
-5. **Vérifier les fuites de mémoire** (optionnel) :
+    ```bash
+    cmake --build build --config Release
+    ```
+
+5. **Ouvrir le projet** :
+    ```bash
+    cd build/Release
+    ./sagrada.exe
+    ```
+
+6. **Vérifier les fuites de mémoire** (optionnel) :
    - Utilisez un outil comme **Dr. Memory** pour vérifier les fuites de mémoire :
      ```bash
-     drmemory -quiet ./game.exe
+     drmemory -quiet ./sagrada.exe
      ```
 
 ## 🕹️ Comment jouer

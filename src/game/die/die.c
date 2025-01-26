@@ -26,6 +26,7 @@ struct die** create_dice_set() {
     // Allocate memory for an array of 90 die pointers
     // 90 * sizeof(struct die*) = 90 * 8 = 720 bytes allocated
     struct die** dice_set = malloc(sizeof(struct die*) * DICE_SET_SIZE);
+    PRINT_AND_DIE_IF_COND_NOT_MEET(dice_set == NULL, "Memory allocation failed", 1);
 
     int index = 0;
     // create 3 dice for each value of each color
