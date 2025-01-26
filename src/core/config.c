@@ -12,9 +12,6 @@ void create_config_file(const char* filepath) {
     }
 
     fprintf(file, "simulations=1000\n");
-    fprintf(file, "colors=true\n");
-    fprintf(file, "difficulty=1\n");
-
     fclose(file);
 }
 
@@ -25,8 +22,6 @@ void populate_config(struct Config* c) {
         return;
     }
     c->simulations = 1000;
-    c->nocolors = 0;
-    c->difficulty = 0;
 }
 
 
@@ -55,10 +50,6 @@ int init_config(const char* filepath) {
 
         if (strcmp(key, "simulations") == 0) {
             config->simulations = atoi(value);
-        } else if (strcmp(key, "colors") == 0) {
-            config->nocolors = (strcmp(value, "true") == 0);
-        } else if (strcmp(key, "difficulty") == 0) {
-            config->difficulty = atoi(value);
         }
     }
 
@@ -79,6 +70,6 @@ void free_config(void) {
 void print_config(void) {
     const struct Config* c = get_config();
     printf("simulations: %d\n", c->simulations);
-    printf("colors: %s\n", c->nocolors ? "false" : "true");
-    printf("difficulty: %d\n", c->difficulty);
+
+    printf("\n\n  -> Appuyez sur 'entrer' pour acceder au menu\n");
 }

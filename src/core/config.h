@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #define DEFAULT_CONFIG_FILE "config.txt"
 
 struct Config {
