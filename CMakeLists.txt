@@ -22,4 +22,4 @@ target_include_directories(sagrada PRIVATE ${INCLUDE_DIRS})
 
 
 # Add compiler flags
-target_compile_options(sagrada PRIVATE -Wall -Werror -Wextra -g -fanalyzer)
+target_compile_options(sagrada PRIVATE -Wall -Werror -Wextra -g -fanalyzer -Werror=vla -pedantic)
