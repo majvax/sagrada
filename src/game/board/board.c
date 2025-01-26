@@ -1,15 +1,17 @@
 #include "board.h"
 
-
 struct board* create_board() {
     // allocate 160 bytes for the board
     struct board* b = malloc(sizeof(struct board));
+    PRINT_AND_DIE_IF_COND_NOT_MEET(b == NULL, "create_board: Memory allocation failed", 1);
 
     // initiate every dice to NULL
     for (int i = 0; i < ROW; i++)
         for (int j = 0; j < COLUMN; j++)
             b->grid[i][j] = NULL;
 
+
+    b->first_die_placed = 0;
     return b;
 }
 
@@ -38,12 +40,46 @@ void free_board(struct board* b) {
     free(b);
 }
 
+int placeable(struct board* b, int posx, int posy) {
+    if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
+        return 0;
+
+    if (b->grid[posx][posy] != NULL)
+        return 0;
+
+    if (!b->first_die_placed)
+        return 1;
+
+    if ((posx > 0 && b->grid[posx - 1][posy] != NULL) ||  // Check above
+        (posx < ROW - 1 && b->grid[posx + 1][posy] != NULL) ||  // Check below
+        (posy > 0 && b->grid[posx][posy - 1] != NULL) ||  // Check left
+        (posy < COLUMN - 1 && b->grid[posx][posy + 1] != NULL)) {  // Check right
+        return 1;  // Valid placement
+    }
+
+    return 0;
+}
+
 int place_die(struct board* b, struct die* d, int posx, int posy) {
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
         return 0;
+
     if (b->grid[posx][posy] != NULL)
         return 0;
+        
+    if (b->first_die_placed) {
+        if ((posx > 0 && b->grid[posx - 1][posy] != NULL) ||  // Check above
+            (posx < ROW - 1 && b->grid[posx + 1][posy] != NULL) ||  // Check below
+            (posy > 0 && b->grid[posx][posy - 1] != NULL) ||  // Check left
+            (posy < COLUMN - 1 && b->grid[posx][posy + 1] != NULL)) {  // Check right
+            // At least one adjacent die exists, proceed to place the die
+        } else {
+            return 0;  // No adjacent die, placement is invalid
+        }
+    }
+
     b->grid[posx][posy] = create_die(d->color, d->value);
+    b->first_die_placed = 1;
     return 1;
 }
 
@@ -60,13 +96,6 @@ int calculate_row(struct board* b, int row) {
         }
     }
 
-    // extra rule (if 5 dice in a row are different value -> 5pts, and if they are same color ->
-    // 10pts)
-    if (EXTRA_RULES && b->grid[row][0]->color == b->grid[row][1]->color &&
-        b->grid[row][1]->color == b->grid[row][2]->color &&
-        b->grid[row][2]->color == b->grid[row][3]->color &&
-        b->grid[row][3]->color == b->grid[row][4]->color)
-        return 10;
     return 5;
 }
 
@@ -83,14 +112,31 @@ int calculate_column(struct board* b, int column) {
         }
     }
 
-    // extra rule (if 4 dice in a column are different colors -> 5pts, and if they are same value ->
-    // 10pts)
-    if (EXTRA_RULES && b->grid[0][column]->value == b->grid[1][column]->value &&
-        b->grid[1][column]->value == b->grid[2][column]->value &&
-        b->grid[2][column]->value == b->grid[3][column]->value)
-        return 10;
-
     return 5;
+}
+
+int stack_of_5(struct board* b) {
+    int color_count[5] = {0};
+
+    for (int i = 0; i < ROW; i++) {
+        for (int j = 0; j < COLUMN; j++) {
+            if (b->grid[i][j] != NULL) {
+                int color = b->grid[i][j]->color;
+                if (color >= 0 && color < 5) {
+                    color_count[color]++;
+                }
+            }
+        }
+    }
+
+    int sets_of_5 = color_count[0];
+    for (int i = 1; i < 5; i++) {
+        if (color_count[i] < sets_of_5) {
+            sets_of_5 = color_count[i];
+        }
+    }
+
+    return sets_of_5;
 }
 
 int calculate_points(struct board* b) {
@@ -107,7 +153,9 @@ int calculate_points(struct board* b) {
             if (b->grid[i][j] != NULL && b->grid[i][j]->color == PURPLE)
                 score += b->grid[i][j]->value;
 
-    // TODO: calculate set of 5 dice for 4 pts
+    // calculate stack of 5 points for 4 pts each
+    score += stack_of_5(b) * 4;
+
 
     return score;
 }

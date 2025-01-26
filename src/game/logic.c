@@ -190,7 +190,6 @@ void player_against_bot(struct Game* game, int rounds) {
 
 void bot_against_bot(struct Game* game, int rounds) {
     game->dice = get_dice(game->dice_set, 5);
-    int dice_left = 5;
     int rounds_remaining = 11 - rounds;
 
     round_menu(game, rounds);
@@ -221,7 +220,6 @@ void bot_against_bot(struct Game* game, int rounds) {
 void player_against_player(struct Game* game, int rounds) {
     game->dice = get_dice(game->dice_set, 5);
     int dice_left = 5;
-    int rounds_remaining = 11 - rounds;
 
     round_menu(game, rounds);
 
@@ -247,5 +245,4 @@ void player_against_player(struct Game* game, int rounds) {
 
     free_dice(game->dice, 5);
 }
-
 

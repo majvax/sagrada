@@ -6,7 +6,7 @@
 
 
 
-int main(int argc, char* argv[]) {
+int main(void) {
     srand((unsigned)time(NULL));
 
     if (!init_config(DEFAULT_CONFIG_FILE)) {

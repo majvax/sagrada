@@ -22,7 +22,7 @@ void bot_random_move(struct board* b, struct die** dice, int* dice_left) {
 
     for (int x = 0; x < ROW; x++) {
         for (int y = 0; y < COLUMN; y++) {
-            if (b->grid[x][y] == NULL) {
+            if (placeable(b, x, y)) {
                 empty_positions[num_positions][0] = x;
                 empty_positions[num_positions][1] = y;
                 num_positions++;
@@ -93,11 +93,8 @@ int make_move(struct board* b, struct die** dice, struct board* opponent_board,
         // For each possible position on the board
         for (int x = 0; x < ROW; x++) {
             for (int y = 0; y < COLUMN; y++) {
-                if (b->grid[x][y] != NULL)
-                    continue;
-
                 // Check if the die can be placed at this position
-                if (b->grid[x][y] != NULL)
+                if (!placeable(b, x, y))
                     continue;
 
                 double total_score = 0.0;
@@ -111,7 +108,9 @@ int make_move(struct board* b, struct die** dice, struct board* opponent_board,
                     struct die** dice_copy = copy_dice(dice, 5);
 
                     // Apply the move
-                    place_die(b_copy, d, x, y);
+
+                    place_die(b_copy, d, x, y); 
+
                     free_die(dice_copy[i]);
                     dice_copy[i] = NULL;
 
