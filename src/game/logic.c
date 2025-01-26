@@ -63,6 +63,7 @@ void play_game(struct Game* game) {
     }
 
     clear();
+    printf("-> FIN DE LA PARTIE\n\n\n");
     print_boards(game->player_board, game->bot_board);
     printf("\n\n");
     printf("-> Score de %s: %d\n-> Score de %s: %d\n\n",
@@ -72,11 +73,11 @@ void play_game(struct Game* game) {
         calculate_points(game->bot_board));
 
     if (calculate_points(game->player_board) > calculate_points(game->bot_board)) {
-        printf("-> %s a gagne\n", game->player1);
+        printf("-> %s a gagne\n\n\n", game->player1);
     } else if (calculate_points(game->player_board) < calculate_points(game->bot_board)) {
-        printf("-> %s a gagne\n", game->player2);
+        printf("-> %s a gagne\n\n\n", game->player2);
     } else {
-        printf("-> C'est une Egalite!\n");
+        printf("-> C'est une Egalite!\n\n\n");
     }
 }
 
