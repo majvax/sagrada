@@ -10,6 +10,12 @@
 #define COLUMN 5
 
 
+#define DIE_LOST -1
+#define DIE_PLACED 1
+#define DIE_NOT_PLACED 0
+
+
+
 struct board {
     struct die* grid[ROW][COLUMN];
     int first_die_placed;
@@ -21,7 +27,7 @@ extern void free_board(struct board* b);
 extern int place_die(struct board* b, struct die* d, int posx, int posy);
 
 extern int calculate_points(struct board* b);
-extern int placeable(struct board* b, int posx, int posy);
+extern int placeable(struct board* b, struct die* d, int posx, int posy);
 
 
 #endif // BOARD_H

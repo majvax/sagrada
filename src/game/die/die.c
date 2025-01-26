@@ -118,9 +118,15 @@ struct die* get_random_die(struct die** dice_set) {
 struct die** get_dice(struct die** dice_set, int number) {
     struct die** dice = malloc(sizeof(struct die*) * number);
     PRINT_AND_DIE_IF_COND_NOT_MEET(dice == NULL, "Memory allocation failed", 1);
-
+    int num_of_null = 0;
     for (int i = 0; i < number; i++) {
         dice[i] = get_random_die(dice_set);
+        if (dice[i] == NULL)
+            num_of_null++;
+    }
+    if (num_of_null == number) {
+        free(dice);
+        return NULL;
     }
     return dice;
 }

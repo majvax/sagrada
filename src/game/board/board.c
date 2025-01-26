@@ -40,7 +40,7 @@ void free_board(struct board* b) {
     free(b);
 }
 
-int placeable(struct board* b, int posx, int posy) {
+int placeable(struct board* b, struct die* d, int posx, int posy) {
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
         return 0;
 
@@ -50,37 +50,100 @@ int placeable(struct board* b, int posx, int posy) {
     if (!b->first_die_placed)
         return 1;
 
-    if ((posx > 0 && b->grid[posx - 1][posy] != NULL) ||  // Check above
-        (posx < ROW - 1 && b->grid[posx + 1][posy] != NULL) ||  // Check below
-        (posy > 0 && b->grid[posx][posy - 1] != NULL) ||  // Check left
-        (posy < COLUMN - 1 && b->grid[posx][posy + 1] != NULL)) {  // Check right
-        return 1;  // Valid placement
+    int adjacent = 0;
+
+    // Check above
+    if (posx > 0 && b->grid[posx - 1][posy] != NULL) {
+        struct die* adj = b->grid[posx - 1][posy];
+        if (adj->color == d->color || adj->value == d->value)
+            return 0;
+        adjacent = 1;
     }
 
-    return 0;
+    // Check below
+    if (posx < ROW - 1 && b->grid[posx + 1][posy] != NULL) {
+        struct die* adj = b->grid[posx + 1][posy];
+        if (adj->color == d->color || adj->value == d->value)
+            return 0;
+        adjacent = 1;
+    }
+
+    // Check left
+    if (posy > 0 && b->grid[posx][posy - 1] != NULL) {
+        struct die* adj = b->grid[posx][posy - 1];
+        if (adj->color == d->color || adj->value == d->value)
+            return 0;
+        adjacent = 1;
+    }
+
+    // Check right
+    if (posy < COLUMN - 1 && b->grid[posx][posy + 1] != NULL) {
+        struct die* adj = b->grid[posx][posy + 1];
+        if (adj->color == d->color || adj->value == d->value)
+            return 0;
+        adjacent = 1;
+    }
+
+    // If no adjacent die is found, placement is invalid
+    if (!adjacent)
+        return 0;
+
+    return 1;
 }
 
 int place_die(struct board* b, struct die* d, int posx, int posy) {
+    // Check if the position is valid
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
-        return 0;
+        return DIE_NOT_PLACED;
 
+    // Check if the position is empty
     if (b->grid[posx][posy] != NULL)
-        return 0;
-        
+        return DIE_NOT_PLACED;
+
+
+    // Check if the die has been placed, if so the die must be placed adjacent to another die
     if (b->first_die_placed) {
-        if ((posx > 0 && b->grid[posx - 1][posy] != NULL) ||  // Check above
-            (posx < ROW - 1 && b->grid[posx + 1][posy] != NULL) ||  // Check below
-            (posy > 0 && b->grid[posx][posy - 1] != NULL) ||  // Check left
-            (posy < COLUMN - 1 && b->grid[posx][posy + 1] != NULL)) {  // Check right
-            // At least one adjacent die exists, proceed to place the die
-        } else {
-            return 0;  // No adjacent die, placement is invalid
+        int adjacent = 0;
+
+        // Check above
+        if (posx > 0 && b->grid[posx - 1][posy] != NULL) {
+            struct die* adj = b->grid[posx - 1][posy];
+            if (adj->color == d->color || adj->value == d->value)
+                return DIE_LOST;
+            adjacent = 1;
         }
+
+        // Check below
+        if (posx < ROW - 1 && b->grid[posx + 1][posy] != NULL) {
+            struct die* adj = b->grid[posx + 1][posy];
+            if (adj->color == d->color || adj->value == d->value)
+                return DIE_LOST;
+            adjacent = 1;
+        }
+
+        // Check left
+        if (posy > 0 && b->grid[posx][posy - 1] != NULL) {
+            struct die* adj = b->grid[posx][posy - 1];
+            if (adj->color == d->color || adj->value == d->value)
+                return DIE_LOST;
+            adjacent = 1;
+        }
+
+        // Check right
+        if (posy < COLUMN - 1 && b->grid[posx][posy + 1] != NULL) {
+            struct die* adj = b->grid[posx][posy + 1];
+            if (adj->color == d->color || adj->value == d->value)
+                return DIE_LOST;
+            adjacent = 1;
+        }
+        
+        if (!adjacent)
+            return DIE_LOST;
     }
 
     b->grid[posx][posy] = create_die(d->color, d->value);
     b->first_die_placed = 1;
-    return 1;
+    return DIE_PLACED;
 }
 
 int calculate_row(struct board* b, int row) {
