@@ -3,7 +3,7 @@
 
 
 
-
+// Liste de noms prédéfinis
 char* names[NUMBER_OF_NAMES] = {
     "Emma",
     "Louise",
@@ -37,7 +37,7 @@ char* names[NUMBER_OF_NAMES] = {
     "Raphael"
 };
 
-
+// Retourne un nom aléatoire pour les bots
 char* get_random_name(void) {
     return names[rand() % NUMBER_OF_NAMES];
 }

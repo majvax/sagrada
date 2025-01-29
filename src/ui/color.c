@@ -1,5 +1,6 @@
 #include "color.h"
 
+// Retourne le code ANSI correspondant à la couleur
 char* get_ansi_code(int color) {
     switch (color) {
     case BLUE:
@@ -12,40 +13,6 @@ char* get_ansi_code(int color) {
         return ANSI_GREEN;
     case PURPLE:
         return ANSI_PURPLE;
-    default:
-        return "";
-    }
-}
-
-int get_color_code(char c) {
-    switch (c) {
-    case 'b':
-        return BLUE;
-    case 'y':
-        return YELLOW;
-    case 'r':
-        return RED;
-    case 'g':
-        return GREEN;
-    case 'p':
-        return PURPLE;
-    default:
-        return -1;
-    }
-}
-
-char* get_background_color_code(int color) {
-    switch (color) {
-    case 'b':
-        return BACKGROUND_BLUE;
-    case 'y':
-        return BACKGROUND_YELLOW;
-    case 'r':
-        return BACKGROUND_RED;
-    case 'g':
-        return BACKGROUND_GREEN;
-    case 'p':
-        return BACKGROUND_PURPLE;
     default:
         return "";
     }

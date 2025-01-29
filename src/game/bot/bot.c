@@ -2,14 +2,7 @@
 #include "time.h"
 #include "unistd.h"
 
-#define DBG_PRINT(fmt, ...)                                            \
-    do {                                                               \
-        time_t t = time(NULL);                                         \
-        printf("[%s:%d] "fmt"\n",__FILE__, __LINE__, ##__VA_ARGS__);   \
-        while(time(NULL) - t < 5);                                     \
-    } while(0)
-
-
+// fais un mouvement à une position aléatoire parmi les positions possibles
 void random_move(struct board* b, struct die** dice, int* dice_left) {
     int die_indices[5];
     int num_dice = 0;
@@ -52,6 +45,7 @@ void random_move(struct board* b, struct die** dice, int* dice_left) {
     (*dice_left)--;
 }
 
+// simule le jeu pour les tours restants
 int simulate_game(struct board* bot_board, struct board* opp_board, struct die** dice_set,
                    int rounds_remaining, int priority) {
     for (int r = 0; r < rounds_remaining; ++r) {
@@ -86,6 +80,7 @@ int simulate_game(struct board* bot_board, struct board* opp_board, struct die**
     return 1;
 }
 
+// trouve le meilleur mouvement à faire en s'adaptant à chaque situation
 int make_move(struct board* b, struct die** dice, struct board* opponent_board,
               struct die** dice_set, int rounds_remaining, int priority) {
 
@@ -165,7 +160,6 @@ int make_move(struct board* b, struct die** dice, struct board* opponent_board,
     
 
 
-    DBG_PRINT("No best move found for us");
     // If this get called it means no move where found, so we are doing
     // the same calculation but inversing the boards
     // This will allow our bot to discard the best die of the opponent
@@ -280,7 +274,6 @@ int make_move(struct board* b, struct die** dice, struct board* opponent_board,
     // Lastly if no best move where found for us and for the opponent
     // we are going to discard a random die
 
-    DBG_PRINT("No best move found for ennemy");
     int die_indices[5];
     int num_dice = 0;
 
@@ -307,7 +300,6 @@ int make_move(struct board* b, struct die** dice, struct board* opponent_board,
     }
     
     int random_index = die_indices[rand() % num_dice];
-    DBG_PRINT("Discarding die %d, (e.g. %p)", random_index, (void*)dice[random_index]);
 
     place_die(b, dice[random_index], empty_positions[rand() % num_positions][0], empty_positions[rand() % num_positions][1]);
     return random_index;

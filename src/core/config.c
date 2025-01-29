@@ -3,7 +3,7 @@
 
 struct Config* config = NULL;
 
-
+// Crée la configuration par défaut
 void create_config_file(const char* filepath) {
     FILE* file = fopen(filepath, "w");
 
@@ -15,8 +15,7 @@ void create_config_file(const char* filepath) {
     fclose(file);
 }
 
-
-
+// Remplit la configuration par défaut si 
 void populate_config(struct Config* c) {
     if (c == NULL) {
         return;
@@ -24,7 +23,7 @@ void populate_config(struct Config* c) {
     c->simulations = 1000;
 }
 
-
+// Initialise la configuration par défaut à partir du fichier de configuration
 int init_config(const char* filepath) {
     if (config == NULL) {
         config = (struct Config*)malloc(sizeof(struct Config));
@@ -57,8 +56,10 @@ int init_config(const char* filepath) {
     return 1;
 }
 
+// Retourne la configuration actuelle
 const struct Config* get_config(void) { return config; }
 
+// Libère la mémoire allouée pour la configuration
 void free_config(void) {
     if (config != NULL) {
         free(config);
@@ -66,7 +67,7 @@ void free_config(void) {
     }
 }
 
-
+// Affiche la configuration actuelle
 void print_config(void) {
     const struct Config* c = get_config();
     printf("simulations: %d\n", c->simulations);

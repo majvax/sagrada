@@ -1,5 +1,6 @@
 #include "board.h"
 
+// Alloue la mémoire pour un plateau
 struct board* create_board() {
     // allocate 160 bytes for the board
     struct board* b = malloc(sizeof(struct board));
@@ -15,6 +16,7 @@ struct board* create_board() {
     return b;
 }
 
+// Alloue la mémoire pour un plateau et copie les dés d'un autre plateau
 struct board* copy_board(struct board* b) {
     struct board* copy = create_board();
     for (int i = 0; i < ROW; i++)
@@ -26,6 +28,7 @@ struct board* copy_board(struct board* b) {
     return copy;
 }
 
+// Libère la mémoire allouée pour le plateau
 void free_board(struct board* b) {
     if (b == NULL)
         return;
@@ -40,6 +43,7 @@ void free_board(struct board* b) {
     free(b);
 }
 
+// Vérifie si un dé peut être placé à une position donnée (utilisé pour l'IA)
 int placeable(struct board* b, struct die* d, int posx, int posy) {
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
         return 0;
@@ -91,6 +95,7 @@ int placeable(struct board* b, struct die* d, int posx, int posy) {
     return 1;
 }
 
+// Place un dé sur le plateau en regardant si la position est valide
 int place_die(struct board* b, struct die* d, int posx, int posy) {
     // Check if the position is valid
     if (posx < 0 || posx >= ROW || posy < 0 || posy >= COLUMN)
@@ -146,6 +151,7 @@ int place_die(struct board* b, struct die* d, int posx, int posy) {
     return DIE_PLACED;
 }
 
+// Calcule les points d'une ligne
 int calculate_row(struct board* b, int row) {
     for (int i = 0; i < COLUMN; i++) {
         if (b->grid[row][i] == NULL)
@@ -162,6 +168,7 @@ int calculate_row(struct board* b, int row) {
     return 5;
 }
 
+// Calcule les points d'une colonne
 int calculate_column(struct board* b, int column) {
     for (int i = 0; i < ROW; i++) {
         if (b->grid[i][column] == NULL)
@@ -178,6 +185,7 @@ int calculate_column(struct board* b, int column) {
     return 5;
 }
 
+// Calcule le nombre de set de 5 de chaque couleur
 int stack_of_5(struct board* b) {
     int color_count[5] = {0};
 
@@ -202,6 +210,7 @@ int stack_of_5(struct board* b) {
     return sets_of_5;
 }
 
+// Calcul les points d'un plateau
 int calculate_points(struct board* b) {
     int score = 0;
     for (int i = 0; i < ROW; i++)

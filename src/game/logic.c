@@ -1,7 +1,7 @@
 #include "logic.h"
 #include "name.h"
 
-
+// Joue un dé pour le joueur (1 dé par tour)
 void player_turn(struct Game* game, struct board* board, int dice_left) {
     int choice, x, y, response;
     do {
@@ -25,6 +25,7 @@ void player_turn(struct Game* game, struct board* board, int dice_left) {
     game->dice[choice - 1] = NULL;
 }
 
+// Joue un dé pour l'ia (2 dés par tour)
 void bot_turn(struct Game* game, struct board* board1, struct board* board2, int rounds_remaining) {
     time_t t = time(NULL);
     int dice_index =
@@ -35,6 +36,7 @@ void bot_turn(struct Game* game, struct board* board1, struct board* board2, int
         ;
 }
 
+// Joue une partie complète
 void play_game(struct Game* game) {
     game->priority = rand() % 2;
 
@@ -81,6 +83,7 @@ void play_game(struct Game* game) {
     }
 }
 
+// Print le menu principal du jeu et retourne le choix de l'utilisateur
 int game_menu() {
     for (;;) {
         clear();
@@ -115,6 +118,7 @@ int game_menu() {
     }
 }
 
+// Print les règles du jeu
 void print_rules() {
     printf("-> REGLES\n\n");
     printf("  -> Le jeu se joue en 10 tours\n");
@@ -132,12 +136,14 @@ void print_rules() {
     printf("    -> Chaque colonne contenant 4 des de couleurs differentes rapporte 5 points\n");
     printf("    -> Chaque de de couleur violet rapport un nombre de points equivalents a sa "
            "valeur\n\n");
+    printf("    -> Chaque set de 5 des de couleur différentes rapporte 4 points\n");
 
     printf("  -> Le joueur avec le plus de points a la fin des 10 tours gagne\n\n");
 
     printf("-> Appuyez sur 'entrer' pour revenir au menu\n");
 }
 
+// Print l'ui d'un tour (plateau, dés, score)
 void round_menu(struct Game* game, int rounds, char* player_name) {
     clear();
     printf("-> TOUR %d\n", rounds);
@@ -154,9 +160,9 @@ void round_menu(struct Game* game, int rounds, char* player_name) {
     printf("-> Voici les des de ce tour\n\n");
     print_dice(game->dice, 5);
     printf("\n");
-
 }
 
+// Joue un tour complet d'un joueur contre l'ia
 void player_against_bot(struct Game* game, int rounds) {
     game->dice = get_dice(game->dice_set, 5);
     if (game->dice == NULL) {
@@ -201,6 +207,7 @@ void player_against_bot(struct Game* game, int rounds) {
     free_dice(game->dice, 5);
 }
 
+// Joue un tour complet d'un bot contre un autre bot
 void bot_against_bot(struct Game* game, int rounds) {
     game->dice = get_dice(game->dice_set, 5);
     if (game->dice == NULL) {
@@ -244,6 +251,7 @@ void bot_against_bot(struct Game* game, int rounds) {
     free_dice(game->dice, 5);
 }
 
+// Joue un tour complet d'un joueur contre un autre joueur
 void player_against_player(struct Game* game, int rounds) {
     game->dice = get_dice(game->dice_set, 5);
     if (game->dice == NULL) {

@@ -16,9 +16,11 @@ int main(void) {
         scanf("%*c");
     }
     
-    
+    // Récupère le mode de jeu choisi par l'utilisateur
     int mode = game_menu();
 
+
+    // Alloue la mémoire utilisé pour le jeu
     struct Game game;
     game.player_board = create_board();
     game.bot_board    = create_board();
@@ -29,6 +31,7 @@ int main(void) {
     play_game(&game);
 
 
+    // Libère la mémoire
     free_board(game.player_board);
     free_board(game.bot_board);
     free_dice(game.dice_set, DICE_SET_SIZE);

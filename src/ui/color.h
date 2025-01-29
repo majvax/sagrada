@@ -14,14 +14,6 @@
 #define ANSI_BLUE "\033[0;34m"
 #define ANSI_PURPLE "\033[0;35m"
 
-#define BACKGROUND_RED "\033[41m"
-#define BACKGROUND_GREEN "\033[42m"
-#define BACKGROUND_YELLOW "\033[43m"
-#define BACKGROUND_BLUE "\033[44m"
-#define BACKGROUND_PURPLE "\033[45m"
-
 extern char* get_ansi_code(int color);
-extern char* get_background_color_code(int color);
-extern int get_color_code(char c);
 
 #endif // COLOR_H

@@ -1,5 +1,6 @@
 #include "art.h"
 
+// Retourne l'art ASCII correspondant à la valeur du dé
 const char** get_ascii_die(struct die* d) {
     if (d == NULL) {
         return die_empty;
@@ -20,6 +21,7 @@ const char** get_ascii_die(struct die* d) {
     }
 }
 
+// Affiche l'art ASCII du dé
 void print_die(struct die* d) {
     char* color = (d != NULL) ? get_ansi_code(d->color) : ANSI_RESET;
     const char** art = get_ascii_die(d);
@@ -31,6 +33,7 @@ void print_die(struct die* d) {
     }
 }
 
+// Affiche l'art ASCII des dés
 void print_dice(struct die** dice, int size) {
     int nb_dice = 0;
     for (int i = 0; i < size; i++) {
@@ -49,6 +52,7 @@ void print_dice(struct die** dice, int size) {
     move_down(DIE_ART_LENGTH);
 }
 
+// Affiche les plateaux de jeu
 void print_boards(struct board* b, struct board* b2) {
 
     // Print Column indice numbers
@@ -112,7 +116,7 @@ void print_boards(struct board* b, struct board* b2) {
 }
 
 
-
+// Art ASCII des dés
 const char* die_1[5] = {
     "+-------+", "|       |", "|   O   |", "|       |", "+-------+",
 };
